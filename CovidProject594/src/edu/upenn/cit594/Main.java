@@ -1,5 +1,6 @@
 package edu.upenn.cit594;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,10 +8,14 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import edu.upenn.cit594.datamanagement.CSVCovidReader;
 import edu.upenn.cit594.datamanagement.CovidReader;
 import edu.upenn.cit594.datamanagement.JSONFileReader;
+import edu.upenn.cit594.datamanagement.PropertyReader;
 import edu.upenn.cit594.processor.CovidDataProcessor;
+import edu.upenn.cit594.processor.PropertyAnalyzer;
 import edu.upenn.cit594.util.Covid;
+import edu.upenn.cit594.util.Property;
 
 public class Main {
 	class Pair<K, V> {
@@ -21,7 +26,7 @@ public class Main {
 			this.v = v;
 		}
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 //        if (args.length != 4) {
 //            System.err.println("incorrect number of arguments");
@@ -68,6 +73,42 @@ public class Main {
 		cp.covidDataSet = c;
 		Map<Long, Long> res = cp.totalPosVacPerZipCodePerDate(date);
 		System.out.println(res);
+
+
+		//testing only
+
+		 CSVCovidReader test =new CSVCovidReader("covid_data.csv");
+		        List<Covid> covidDataList = test.getCovidDataList();
+		        System.out.println(covidDataList.size());
+
+		//        for(int i =0;i<covidDataList.size();i++){
+		//            System.out.println(covidDataList.get(i).toString());
+		//        }
+
+		        PropertyReader test2 =new PropertyReader("properties.csv");
+		        List<Property> propertyDataList = test2.getPropertiesDataList();
+
+		        for(int i =0;i<100;i++){
+		            System.out.println(propertyDataList.get(i).toString());
+		        }
+
+		        System.out.println(propertyDataList.size());
+
+		//        PopulationReader test3 =new PopulationReader("population.csv");
+		//        List<Population> populationDataList = test3.getPopulationDataList();
+		//
+		//        for(int i =0;i<populationDataList.size();i++){
+		//            System.out.println(populationDataList.get(i).toString());
+		//        }
+		//
+		//        System.out.println(populationDataList.size());
+
+		        PropertyAnalyzer propertyAnalyzer = new PropertyAnalyzer();
+		        String zip = "19148";
+
+		Double averageMarketValue = propertyAnalyzer.AverageMarketValue(propertyDataList, zip);
+
+		System.out.println("The average market value for properties in " + zip + " is " + averageMarketValue);
 		
 	}
 }
