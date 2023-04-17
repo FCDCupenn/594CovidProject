@@ -51,7 +51,7 @@ public class Main {
 //			}
 //		} while (choice < 8);
 		
-		// only for test...
+		// only for test.....
 		String[] filenames_1 = {"covid_data.json", "properties.csv", "population.csv", "log_1"};
 		String[] filenames_2 = {"covid_data.csv", "properties.csv", "population.csv", "log_2"};
 		
