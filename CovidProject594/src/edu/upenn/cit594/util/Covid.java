@@ -3,7 +3,7 @@ import java.util.Date;
 
 public class Covid {
 	
-	private long zipCode;
+	private String zipCode;
 	private long negTest;
 	private long posTest;
 	private long deathToll;
@@ -14,7 +14,7 @@ public class Covid {
 	private String date;
 	
 	
-	public Covid (long zipCode, long negTest, long posTest, long deathToll, long hospitalization, long partialVaccinated,
+	public Covid (String zipCode, long negTest, long posTest, long deathToll, long hospitalization, long partialVaccinated,
 			long fullyVaccinated, long booster,  String date) {
 		
 		this.zipCode = zipCode;
@@ -29,7 +29,7 @@ public class Covid {
 		
 	}
 
-	public long getZipCode() {
+	public String getZipCode() {
 		return zipCode;
 	}
 
@@ -73,7 +73,11 @@ public class Covid {
 		return date;
 	}
 
-
+	public String toString() {
+		return "Covid [zipCode=" + zipCode + ", negTest=" + negTest + ", posTest=" + posTest + ", deathToll=" + deathToll
+				+ ", hospitalization=" + hospitalization + ", partialVaccinated=" + partialVaccinated
+				+ ", fullyVaccinated=" + fullyVaccinated + ", booster=" + booster + ", date=" + date + "]";
+	}
 
 	
 	

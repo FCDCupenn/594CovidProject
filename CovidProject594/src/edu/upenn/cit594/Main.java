@@ -8,13 +8,11 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import edu.upenn.cit594.datamanagement.CSVCovidReader;
-import edu.upenn.cit594.datamanagement.CovidReader;
-import edu.upenn.cit594.datamanagement.JSONFileReader;
-import edu.upenn.cit594.datamanagement.PropertyReader;
+import edu.upenn.cit594.datamanagement.*;
 import edu.upenn.cit594.processor.CovidDataProcessor;
 import edu.upenn.cit594.processor.PropertyAnalyzer;
 import edu.upenn.cit594.util.Covid;
+import edu.upenn.cit594.util.Population;
 import edu.upenn.cit594.util.Property;
 
 public class Main {
@@ -57,58 +55,58 @@ public class Main {
 		
 		String filename = "covid_data.json";
 		CovidReader cr = new CovidReader();
-		
+
 		List<Covid> c = cr.jReader.readAllCovid(filename);
-//		System.out.println(c.get(84).getDate());
-//		System.out.println(c.get(84).getNegTest());
+		System.out.println(c.get(84).getDate());
+		System.out.println(c.get(84).getNegTest());
 		String date = "2021-03-25";
 		final Map<Long, Long> populationMap = new HashMap<>();
 		final Map<Long, Long> negs = c.stream().filter(e -> e.getDate().equals(date)).
 			collect(Collectors.groupingBy(Covid::getZipCode, Collectors.summingLong(Covid::getNegTest)));
-			
+
 		
 		System.out.println(negs);
-		
+
 		CovidDataProcessor cp = new CovidDataProcessor();
 		cp.covidDataSet = c;
 		Map<Long, Long> res = cp.totalPosVacPerZipCodePerDate(date);
 		System.out.println(res);
 
 
-		//testing only
-
-		 CSVCovidReader test =new CSVCovidReader("covid_data.csv");
-		        List<Covid> covidDataList = test.getCovidDataList();
-		        System.out.println(covidDataList.size());
-
-		//        for(int i =0;i<covidDataList.size();i++){
-		//            System.out.println(covidDataList.get(i).toString());
-		//        }
-
-		        PropertyReader test2 =new PropertyReader("properties.csv");
-		        List<Property> propertyDataList = test2.getPropertiesDataList();
-
-		        for(int i =0;i<100;i++){
-		            System.out.println(propertyDataList.get(i).toString());
-		        }
-
-		        System.out.println(propertyDataList.size());
-
-		//        PopulationReader test3 =new PopulationReader("population.csv");
-		//        List<Population> populationDataList = test3.getPopulationDataList();
-		//
-		//        for(int i =0;i<populationDataList.size();i++){
-		//            System.out.println(populationDataList.get(i).toString());
-		//        }
-		//
-		//        System.out.println(populationDataList.size());
-
-		        PropertyAnalyzer propertyAnalyzer = new PropertyAnalyzer();
-		        String zip = "19148";
-
-		Double averageMarketValue = propertyAnalyzer.AverageMarketValue(propertyDataList, zip);
-
-		System.out.println("The average market value for properties in " + zip + " is " + averageMarketValue);
-		
+		//testing only for kaiyin
+//
+//		 CSVCovidReader test =new CSVCovidReader("covid_data.csv");
+//		        List<Covid> covidDataList = test.getCovidDataList();
+//		        System.out.println(covidDataList.size());
+//
+//		        for(int i =0;i<covidDataList.size();i++){
+//		            System.out.println(covidDataList.get(i).toString());
+//		        }
+//
+//		        PropertyReader test2 =new PropertyReader("properties.csv");
+//		        List<Property> propertyDataList = test2.getPropertiesDataList();
+//
+//		        for(int i =0;i<100;i++){
+//		            System.out.println(propertyDataList.get(i).toString());
+//		        }
+//
+//		        System.out.println(propertyDataList.size());
+//
+//		        PopulationReader test3 =new PopulationReader("population.csv");
+//		        List<Population> populationDataList = test3.getPopulationDataList();
+//
+//		        for(int i =0;i<populationDataList.size();i++){
+//		            System.out.println(populationDataList.get(i).toString());
+//		        }
+//
+//		        System.out.println(populationDataList.size());
+//
+//		        PropertyAnalyzer propertyAnalyzer = new PropertyAnalyzer();
+//		        String zip = "19148";
+//
+//		Double averageMarketValue = propertyAnalyzer.AverageMarketValue(propertyDataList, zip);
+//
+//		System.out.println("The average market value for properties in " + zip + " is " + averageMarketValue);
+//
 	}
 }

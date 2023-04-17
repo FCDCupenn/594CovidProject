@@ -23,7 +23,10 @@ public class Property {
 	public String getZipCode() {
 		return zipCode;
 	}
-	
+	public String toString() {
+		return "[MarketValue=" + marketValue +" " + "totalLivableArea=" + totalLivableArea +" " +
+				"ZipCode=" + zipCode +"]";
+	}
 	
 }
 

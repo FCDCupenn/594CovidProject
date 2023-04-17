@@ -23,13 +23,13 @@ public class CSVCovidReader {
 			while((row =csvReader.readRow())!=null){
 				String zipCode = row[headerID.get("zip_code")];
 				String timestamp = row[headerID.get("etl_timestamp")];
-				long partiallyVaccinated = parseStringtoInt(row[headerID.get("partially_vaccinated")]);
-				long fullyVaccinated = parseStringtoInt(row[headerID.get("fully_vaccinated")]);
-				long NEG = parseStringtoInt(row[headerID.get("NEG")]);
-				long POS = parseStringtoInt(row[headerID.get("POS")]);
-				long deaths = parseStringtoInt(row[headerID.get("deaths")]);
-				long hospitalized = parseStringtoInt(row[headerID.get("hospitalized")]);
-				long boosted = parseStringtoInt(row[headerID.get("boosted")]);
+				long partiallyVaccinated = parseStringtoLong(row[headerID.get("partially_vaccinated")]);
+				long fullyVaccinated = parseStringtoLong(row[headerID.get("fully_vaccinated")]);
+				long NEG = parseStringtoLong(row[headerID.get("NEG")]);
+				long POS = parseStringtoLong(row[headerID.get("POS")]);
+				long deaths = parseStringtoLong(row[headerID.get("deaths")]);
+				long hospitalized = parseStringtoLong(row[headerID.get("hospitalized")]);
+				long boosted = parseStringtoLong(row[headerID.get("boosted")]);
 
 				//skip invalid digit
 				if(zipCode.length() != 5){
@@ -50,11 +50,11 @@ public class CSVCovidReader {
 
 	 }
 
-	 private int parseStringtoInt(String text){
+	 private Long parseStringtoLong(String text){
 		 if(text.isEmpty()){
-			 return 0;
+			 return 0L;
 		 }else{
-			 return Integer.parseInt(text);
+			 return Long.parseLong(text);
 		 }
 	 }
 
