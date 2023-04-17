@@ -41,7 +41,7 @@ public class CSVCovidReader {
 				Covid eachCovidRecord = new Covid(zipCode,NEG, POS, deaths, hospitalized,partiallyVaccinated,fullyVaccinated, boosted,timestamp);
 				covidDataList.add(eachCovidRecord);
 			}
-			System.out.println("Covid data List size:"+ covidDataList.size());
+			//System.out.println("Covid data List size:"+ covidDataList.size());
 
 		} catch (CSVFormatException e) {
 			throw new RuntimeException(e);
@@ -50,7 +50,7 @@ public class CSVCovidReader {
 
 	 }
 
-	 private int parseStringtoInt(String text){
+	 private long parseStringtoInt(String text){
 		 if(text.isEmpty()){
 			 return 0;
 		 }else{

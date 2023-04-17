@@ -4,19 +4,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import edu.upenn.cit594.datamanagement.AlmightyReader;
 import edu.upenn.cit594.util.Covid;
+import edu.upenn.cit594.util.Population;
 
 public class CovidDataProcessor {
 	
-	// covid data set d
+	// covid data set 
 	public List<Covid> covidDataSet;
-	// this HashMap contains the map for zipcode and population
-	public HashMap<Long, Long> populationPerZipCode;
 	
-	//public HashMap<Long, Long> populationSumPerZipCodePerDate;
+	// this is population list
+	public List<Population> populationList;
 	
+	// this HashMap contains the map for zipcode and population for that zipcode
+	public Map<String, Long> populationMap = new HashMap<>();
+	
+	public AlmightyReader reader;
 	
 	
 	public long totalNumberOfInfection;
@@ -25,52 +31,50 @@ public class CovidDataProcessor {
 	public long totalPopulation;
 	
 	
-	public CovidDataProcessor () {
-		covidDataSet = new ArrayList<>();
-		populationPerZipCode = new HashMap<>();
-	}
-	
-	
-	public long totalVaccinationFromGivenZipCode (long zipCode) {
-		// invalid input
-		if (zipCode > 99999 || zipCode < 9999) return -1; 
-		
-		
-		
-		return totalNumberOfInfection;
+	public CovidDataProcessor (AlmightyReader reader) {
+		this.reader = reader;
+		covidDataSet = reader.getCovidList();
+		populationList = reader.getPopulationList();
+		populationMap = reader.populationListToMap(populationList);
 	}
 	
 	
 	
-	public Map<Long, Double> partialOrFullVacPerCapita(String date, String partialOrFull) {
+	
+	
+	public Map<String, Double> getpartialOrFullVacPerCapita(String date, String partialOrFull) {
 		// this map store zipcode and partial vaccine per captia
-		Map<Long, Double> res = new HashMap<>();
+		Map<String, Double> res = new TreeMap<>();
 		
-		Map<Long, Long> totalPartialOrFullVacNumber = new HashMap<>();
+		Map<String, Long> totalPartialOrFullVacNumber = new HashMap<>();
 		
+		// get partial or full vaccination population per zipcode for each date
 		if (partialOrFull.equals("partial")) {
-			totalPartialOrFullVacNumber = this.totalPartialVacPerZipCodePerDate(date);
+			totalPartialOrFullVacNumber = this.getTotalPartialVacPerZipCodePerDate(date);
 			
 		}
 		else {
-			totalPartialOrFullVacNumber = this.totalFullyVacPerZipCodePerDate(date);
+			totalPartialOrFullVacNumber = this.getTotalFullyVacPerZipCodePerDate(date);
 		}
 		
-		for (int i = 0; i < covidDataSet.size(); i++) {
+		for (Map.Entry<String, Long> partialorFull : totalPartialOrFullVacNumber.entrySet()) {
 			// if the date doesn't match or ZipCode doesn't match, skip that line
-			String zipcode = Long.toString(covidDataSet.get(i).getZipCode());
-			if (!covidDataSet.get(i).getDate().equals(date) || zipcode.length() != 5) {
-				continue;
-			}
+			String zipcode = partialorFull.getKey();
 			// if populationPerZipCode contains that key
-			long zip = covidDataSet.get(i).getZipCode();
-			if (populationPerZipCode.containsKey(zip)) {	
-				double partialPerCaptita = totalPartialOrFullVacNumber.get(zip) / populationPerZipCode.get(zip);
-				res.put(zip, partialPerCaptita);
+			if (populationMap.containsKey(zipcode)) {	
+				
+				long numerator = totalPartialOrFullVacNumber.get(zipcode);
+				long denominator = populationMap.get(zipcode);
+				
+				double partialorFullPerCaptita = (double) numerator / denominator;
+				
+				partialorFullPerCaptita = (double) Math.round(partialorFullPerCaptita * 10000) / 10000;
+				
+				res.put(zipcode, partialorFullPerCaptita);
 			}
 			// doesn't contain this key, will put 0 in it
 			else {
-				res.put(zip, 0.000);
+				res.put(zipcode, 0.0000);
 			}
 			
 		}
@@ -85,13 +89,13 @@ public class CovidDataProcessor {
 	 * @return
 	 */
 	
-	public Map<Long, Long> totalPartialVacPerZipCodePerDate(String date) {
+	public Map<String, Long> getTotalPartialVacPerZipCodePerDate(String date) {
 		// this map will store the zipcode for each sum
-		Map<Long, Long> res = new HashMap<>();
+		Map<String, Long> res = new HashMap<>();
 		for (int i = 0; i < covidDataSet.size(); i++) {
-			// if the date doesn't match or ZipCode doesn't match, skip that line
-			String zipcode = Long.toString(covidDataSet.get(i).getZipCode());
-			if (!covidDataSet.get(i).getDate().equals(date) || zipcode.length() != 5) {
+			// if the date doesn't match or ZipCode doesn't match, skip that line, or the zipcode is empty
+			String zipcode = covidDataSet.get(i).getZipCode();
+			if (!covidDataSet.get(i).getDate().startsWith(date) || zipcode.isEmpty()) {
 				continue;
 			}
 			
@@ -108,13 +112,13 @@ public class CovidDataProcessor {
 		return res;
 	}
 	
-	public Map<Long, Long> totalFullyVacPerZipCodePerDate(String date) {
+	public Map<String, Long> getTotalFullyVacPerZipCodePerDate(String date) {
 		// this map will store the zipcode for each sum
-		Map<Long, Long> res = new HashMap<>();
+		Map<String, Long> res = new HashMap<>();
 		for (int i = 0; i < covidDataSet.size(); i++) {
 			// if the date doesn't match or ZipCode doesn't match, skip that line
-			String zipcode = Long.toString(covidDataSet.get(i).getZipCode());
-			if (!covidDataSet.get(i).getDate().equals(date) || zipcode.length() != 5) {
+			String zipcode = covidDataSet.get(i).getZipCode();
+			if (!covidDataSet.get(i).getDate().startsWith(date) || zipcode.isEmpty()) {
 				continue;
 			}
 			
@@ -131,33 +135,12 @@ public class CovidDataProcessor {
 		return res;
 	}
 	
-	public Map<Long, Long> totalNegVacPerZipCodePerDate(String date) {
-		// this map will store the zipcode for each sum
-		Map<Long, Long> res = new HashMap<>();
-		for (int i = 0; i < covidDataSet.size(); i++) {
-			// if the date doesn't match or ZipCode doesn't match, skip that line
-			String zipcode = Long.toString(covidDataSet.get(i).getZipCode());
-			if (!covidDataSet.get(i).getDate().equals(date) || zipcode.length() != 5) {
-				continue;
-			}
-			
-			// calculate the sum for each zip and date
-			if (!res.containsKey(covidDataSet.get(i).getZipCode())) {
-				res.put(covidDataSet.get(i).getZipCode(), covidDataSet.get(i).getNegTest());
-			}
-			else
-				res.put(covidDataSet.get(i).getZipCode(), 
-						covidDataSet.get(i).getNegTest() + res.get(covidDataSet.get(i).getZipCode()));
-			
-		}
-		
-		return res;
-	}
+
 	
-	public Map<Long, Long> totalPosVacPerZipCodePerDate(String date) {
+	public Map<String, Long> totalPosVacPerZipCodePerDate(String date) {
 		// this map will store the zipcode for each sum
 		//HashMap<Long, Long> res = new HashMap<>();
-		 Map<Long, Long> res = covidDataSet.stream().filter(e -> e.getDate().equals(date)).
+		 Map<String, Long> res = covidDataSet.stream().filter(e -> e.getDate().startsWith(date)).
 					collect(Collectors.groupingBy(Covid::getZipCode, Collectors.summingLong(Covid::getPosTest)));
 		
 		return res;

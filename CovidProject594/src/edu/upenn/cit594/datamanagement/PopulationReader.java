@@ -12,8 +12,10 @@ public class PopulationReader {
     public CSVReader csvReader;
     private Map<String, Integer> headerID;
     private List<Population> populationDataList = new ArrayList<>();
+    
+    public PopulationReader() {}
 
-    public  PopulationReader (String filename) throws IOException {
+    public  List<Population>  getPopulationDataList (String filename) throws IOException {
         try( var reader = new CharacterReader(filename)){
             csvReader = new CSVReader(reader);
             headerID =csvReader.generateHeaderID();
@@ -34,17 +36,18 @@ public class PopulationReader {
                 Population populationData = new Population(population,zipCode);
                 populationDataList.add(populationData);
             }
-            System.out.println("Covid data List size:"+ populationDataList.size());
+            //System.out.println("Covid data List size:"+ populationDataList.size());
 
         } catch (CSVFormatException e) {
             throw new RuntimeException(e);
         }
-
+        
+        return this.populationDataList;
 
     }
 
-    public List<Population> getPopulationDataList() {
-        return populationDataList;
-    }
+//    public List<Population> getPopulationDataList() {
+//        return populationDataList;
+//    }
 
 }

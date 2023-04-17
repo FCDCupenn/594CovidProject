@@ -56,7 +56,7 @@ public class JSONFileReader {
 	 * This method will get the Tweet information from the read file
 	 * @return all tweet information from the JSONArray
 	 */
-	@SuppressWarnings("unused")
+	
 	private List<Covid> processCovidData(JSONArray ja) {
 		List<Covid> res = new ArrayList<>();
 
@@ -64,27 +64,23 @@ public class JSONFileReader {
 		while (itr.hasNext()) {
 			JSONObject jo = (JSONObject) itr.next();
 			ArrayList<Long> covidContent = new ArrayList<>();
-			for (int i = 0; i < columnHeader.length - 1; i++) {
+			// if the zipcode is missing put it as empty string
+			String zipcode = jo.containsKey(ZIP_CODE) ? String.valueOf(jo.get(ZIP_CODE)): "";
+			if(zipcode.length() != 5){
+				continue;
+			}
+			for (int i = 1; i < columnHeader.length - 1; i++) {
 				long covidInfo = jo.containsKey(columnHeader[i]) ? (Long) jo.get(columnHeader[i]) : 0;
 				covidContent.add(covidInfo);
 
 			}
+			
+			//empty String
+			String date = jo.containsKey(ETL_TIMESTAMP) ? ((String) jo.get(ETL_TIMESTAMP)) : "";
 
 
-			String date = jo.containsKey(ETL_TIMESTAMP) ? ((String) jo.get(ETL_TIMESTAMP)).substring(0, 10) : null;
-			// if (date == null) throw IOException;
-//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//			Date d = null;
-//			try {
-//				d = sdf.parse(date);
-//
-//			} catch (java.text.ParseException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-
-			Covid covid = new Covid(covidContent.get(0), covidContent.get(1), covidContent.get(2), covidContent.get(3),
-					covidContent.get(4), covidContent.get(5), covidContent.get(6), covidContent.get(7), date);
+			Covid covid = new Covid(zipcode, covidContent.get(0), covidContent.get(1), covidContent.get(2),
+					covidContent.get(3), covidContent.get(4), covidContent.get(5), covidContent.get(6), date);
 
 			res.add(covid);
 		}

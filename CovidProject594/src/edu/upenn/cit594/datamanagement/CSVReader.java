@@ -182,15 +182,15 @@ public class CSVReader {
         String[] firstRow = readRow();
         for(int i = 0; i<firstRow.length;i++){
             String header = firstRow[i];
-            headerID.put(header, i);
+            headerID.put(header,  i);
 
         }
         return headerID;
 
     }
 
-    public int getFieldPerHeader(String header){
-        int ID = this.headerID.get(header);
+    public long getFieldPerHeader(String header){
+        long ID = this.headerID.get(header);
         return ID;
 
     }
