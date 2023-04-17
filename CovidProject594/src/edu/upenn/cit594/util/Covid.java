@@ -73,7 +73,11 @@ public class Covid {
 		return date;
 	}
 
-
+	public String toString() {
+		return "Covid [zipCode=" + zipCode + ", negTest=" + negTest + ", posTest=" + posTest + ", deathToll=" + deathToll
+				+ ", hospitalization=" + hospitalization + ", partialVaccinated=" + partialVaccinated
+				+ ", fullyVaccinated=" + fullyVaccinated + ", booster=" + booster + ", date=" + date + "]";
+	}
 
 	
 	
