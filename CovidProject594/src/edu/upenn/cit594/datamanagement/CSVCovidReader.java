@@ -12,6 +12,8 @@ public class CSVCovidReader {
 	 public CSVReader csvReader;
 	 private Map<String, Integer> headerID;
 	 private List<Covid> covidDataList = new ArrayList<>();
+	 
+	 public CSVCovidReader() {}
 
 	public CSVCovidReader(String filename) throws IOException {
 		try( var reader = new CharacterReader(filename)){
@@ -21,13 +23,13 @@ public class CSVCovidReader {
 			while((row =csvReader.readRow())!=null){
 				String zipCode = row[headerID.get("zip_code")];
 				String timestamp = row[headerID.get("etl_timestamp")];
-				int partiallyVaccinated = parseStringtoInt(row[headerID.get("partially_vaccinated")]);
-				int fullyVaccinated = parseStringtoInt(row[headerID.get("fully_vaccinated")]);
-				int NEG = parseStringtoInt(row[headerID.get("NEG")]);
-				int POS = parseStringtoInt(row[headerID.get("POS")]);
-				int deaths = parseStringtoInt(row[headerID.get("deaths")]);
-				int hospitalized = parseStringtoInt(row[headerID.get("hospitalized")]);
-				int boosted = parseStringtoInt(row[headerID.get("boosted")]);
+				long partiallyVaccinated = parseStringtoInt(row[headerID.get("partially_vaccinated")]);
+				long fullyVaccinated = parseStringtoInt(row[headerID.get("fully_vaccinated")]);
+				long NEG = parseStringtoInt(row[headerID.get("NEG")]);
+				long POS = parseStringtoInt(row[headerID.get("POS")]);
+				long deaths = parseStringtoInt(row[headerID.get("deaths")]);
+				long hospitalized = parseStringtoInt(row[headerID.get("hospitalized")]);
+				long boosted = parseStringtoInt(row[headerID.get("boosted")]);
 
 				//skip invalid digit
 				if(zipCode.length() != 5){
