@@ -40,7 +40,12 @@ public class CovidDataProcessor {
 	
 	
 	
-	
+	/**
+	 * This method will return the partial or full vaccination data per capita
+	 * @param date
+	 * @param partialOrFull
+	 * @return return a Map of partial or full vaccination data
+	 */
 	
 	public Map<String, Double> getpartialOrFullVacPerCapita(String date, String partialOrFull) {
 		// this map store zipcode and partial vaccine per captia
@@ -85,8 +90,8 @@ public class CovidDataProcessor {
 	}
 	
 	/**
-	 * This method will return the total number of vac calculation per zipcode for each given date
-	 * @return
+	 * This method will return the partial number of vaccination calculation per zipcode for each given date
+	 * @return a map containing the total number of partial vaccination data per zipcode
 	 */
 	
 	public Map<String, Long> getTotalPartialVacPerZipCodePerDate(String date) {
@@ -112,6 +117,10 @@ public class CovidDataProcessor {
 		return res;
 	}
 	
+	/**
+	 * This method will return the full number of vaccination calculation per zipcode for each given date
+	 * @return a map containing the total number of full vaccination data per zipcode
+	 */
 	public Map<String, Long> getTotalFullyVacPerZipCodePerDate(String date) {
 		// this map will store the zipcode for each sum
 		Map<String, Long> res = new HashMap<>();
@@ -136,7 +145,11 @@ public class CovidDataProcessor {
 	}
 	
 
-	
+	/**
+	 * this number will return the positive tested for a specific zip code
+	 * @param date
+	 * @return a Map that contains the positive zipcode
+	 */
 	public Map<String, Long> totalPosVacPerZipCodePerDate(String date) {
 		// this map will store the zipcode for each sum
 		//HashMap<Long, Long> res = new HashMap<>();
@@ -146,5 +159,64 @@ public class CovidDataProcessor {
 		return res;
 	}
 	
+	/**
+	 * this number will return the negative tested for a specific zip code
+	 * @param date
+	 * @return a Map that contains the positive zipcode
+	 */
+	public Map<String, Long> totalNegVacPerZipCodePerDate(String date) {
+		// this map will store the zipcode for each sum
+		//HashMap<Long, Long> res = new HashMap<>();
+		 Map<String, Long> res = covidDataSet.stream().filter(e -> e.getDate().startsWith(date)).
+					collect(Collectors.groupingBy(Covid::getZipCode, Collectors.summingLong(Covid::getNegTest)));
+		
+		return res;
+	}
+	
+	/** This method will return the total positive vac per Date per capta for postive vaccine for option 7
+	 * 
+	 * @param date
+	 * @param negOrPos
+	 * @return
+	 */
+	public Map<String, Double> getTotalNegOrPosVacPerZipCodePerDatePerCapita(String date, String negOrPos){
+		Map<String, Double> res = new TreeMap<>();
+		
+		Map<String, Long> totalNegorPos = new HashMap<>();
+		
+		// get negative or positive vaccination population per zipcode for each date
+		if (negOrPos.equals("negative")) {
+			totalNegorPos = this.totalNegVacPerZipCodePerDate(date);
+			
+		}
+		else {
+			totalNegorPos = this.totalPosVacPerZipCodePerDate(date);
+		}
+		
+		for (Map.Entry<String, Long> partialorFull : totalNegorPos.entrySet()) {
+			// if the date doesn't match or ZipCode doesn't match, skip that line
+			String zipcode = partialorFull.getKey();
+			// if populationPerZipCode contains that key
+			if (populationMap.containsKey(zipcode)) {	
+				
+				long numerator = totalNegorPos.get(zipcode);
+				long denominator = populationMap.get(zipcode);
+				
+				double partialorFullPerCaptita = (double) numerator / denominator;
+				
+				partialorFullPerCaptita = (double) Math.round(partialorFullPerCaptita * 10000) / 10000;
+				
+				res.put(zipcode, partialorFullPerCaptita);
+			}
+			// doesn't contain this key, will put 0 in it
+			else {
+				res.put(zipcode, 0.0000);
+			}
+			
+		}
+		
+		
+		return res;
+	}
 	
 }

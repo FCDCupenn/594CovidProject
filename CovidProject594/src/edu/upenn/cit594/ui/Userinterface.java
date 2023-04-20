@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,15 +123,62 @@ public class Userinterface {
 	 */
 	
 	public static void printAvailableActionsOptions(String[] filenames){
+		String[] availableActions = {"Exit the program",
+				"Show the available actions",
+				"Show the total population for all ZIP Codes",
+				"Show the total vaccinations per capita for each ZIP Code for the specified date",
+				"Show the average market value for properties in a specified ZIP Code",
+				"Show the average total livable area for properties in a specified ZIP Code",
+				"Show the total market value of properties, per capita, for a specified ZIP Code",
+				"Show the results of your custom feature"};
 		List<Integer> options = new ArrayList<>();
 		options = getAvailableActionsOptions(filenames);
 		System.out.println("BEGIN OUTPUT");
 		for (int i = 0; i < options.size(); i++) {
-			System.out.println(options.get(i));
+			System.out.println(String.valueOf(options.get(i)) + ". " + availableActions[options.get(i)]);
 		}
 		System.out.println("END OUTPUT");
 		
 	}
+	
+	/**
+	 * This method will print out the total population 
+	 * @param count
+	 */
+	public static void printTotalPopulationForAllZipCodes(long count) {
+		System.out.println("BEGIN OUTPUT");
+		System.out.println(count);
+		System.out.println("END OUTPUT");
+	}
+	
+	
+	/**
+	 * This method will print out the total partial or full vaction per captia
+	 * @param partialorFullPerCapita
+	 */
+	public static void printTotalPartialOrFullVacPerCapita(Map<String, Double> partialorFullPerCapita) {
+		System.out.println("BEGIN OUTPUT");
+		for (Map.Entry<String, Double> pfc : partialorFullPerCapita.entrySet()) {
+			System.out.print(pfc.getKey() + " ");
+			System.out.println(pfc.getValue());
+		}
+		System.out.println("END OUTPUT");
+	}
+	
+	/**
+	 * This method will print out the total negative or vaccine per capita 
+	 * @param partialorFullPerCapita
+	 */
+	public static void printTotalNegOrPosVacPerCapita(Map<String, Double> negOrPos) {
+		System.out.println("BEGIN OUTPUT");
+		for (Map.Entry<String, Double> pfc : negOrPos.entrySet()) {
+			System.out.print(pfc.getKey() + " ");
+			System.out.println(pfc.getValue());
+		}
+		System.out.println("END OUTPUT");
+	}
+	
+	
 	
 	
 	

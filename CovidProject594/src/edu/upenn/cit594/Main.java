@@ -73,18 +73,30 @@ public class Main {
 		
 		AlmightyReader reader_json = new AlmightyReader(filenames_1);
 		AlmightyReader reader_csv = new AlmightyReader(filenames_2);
+		AlmightyReader reader_final  = new AlmightyReader(finalFiles);
 		
 		CovidDataProcessor cdp_json = new CovidDataProcessor(reader_json);
 		CovidDataProcessor cdp_csv = new CovidDataProcessor(reader_csv);
+		CovidDataProcessor cdp_final = new CovidDataProcessor(reader_final);
 		
+		
+		long totalPopulation = PopulationDataProcessor.totalPoplulation(reader_final.getPopulationList());
+		
+		Userinterface.printTotalPopulationForAllZipCodes(totalPopulation);
+	
 		
 		String date = "2021-03-25";
 		String partial = "partial";
 		String full = "full";
-		System.out.println(
-		cdp_json.getpartialOrFullVacPerCapita(date, partial));
-		System.out.println(
-		cdp_csv.getpartialOrFullVacPerCapita(date, partial));
+//		System.out.println(
+//		cdp_json.getpartialOrFullVacPerCapita(date, partial));
+//		System.out.println(
+//		cdp_csv.getpartialOrFullVacPerCapita(date, partial));
+//		
+//		Userinterface.printTotalPartialOrFullVacPerCapita(cdp_json.getpartialOrFullVacPerCapita(date, partial));
+//		Userinterface.printTotalPartialOrFullVacPerCapita(cdp_final.getpartialOrFullVacPerCapita(date, partial));
+		
+		Userinterface.printTotalNegOrPosVacPerCapita(cdp_final.getTotalNegOrPosVacPerZipCodePerDatePerCapita(date, "negative"));
 		
 		
 		Userinterface.printAvailableActionsOptions(filenames_3);
