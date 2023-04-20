@@ -52,7 +52,7 @@ public class Main {
 //				break;
 //			}
 //		} while (choice < 8);
-		
+		long startTime = System.currentTimeMillis();
 		if (args.length > 4) {
           System.err.println("incorrect number of arguments");
           return;
@@ -110,7 +110,7 @@ public class Main {
 		ui.printValuePerCapita(zipcode);
 
 		//testing speed <120000ms
-		long startTime = System.currentTimeMillis();
+		
 		long endTime = System.currentTimeMillis();
 		long elapsedTime = endTime - startTime;
 		System.out.println("Elapsed time: " + elapsedTime + " milliseconds");
