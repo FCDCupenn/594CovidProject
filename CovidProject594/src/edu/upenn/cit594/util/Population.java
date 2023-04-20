@@ -11,7 +11,7 @@ public class Population {
         this.zipCode = zipCode;
     }
 
-    public double getPopulation() {
+    public int getPopulation() {
         return population;
     }
 

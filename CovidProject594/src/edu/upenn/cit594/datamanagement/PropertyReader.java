@@ -57,7 +57,7 @@ public class PropertyReader {
 
 
     private Double parseStringtoInt(String text){
-        if(text.isEmpty()){
+        if(text.isEmpty()||text.matches(".*[a-zA-Z].*")){
             return Double.NEGATIVE_INFINITY;
         }else{
             return Double.parseDouble(text);

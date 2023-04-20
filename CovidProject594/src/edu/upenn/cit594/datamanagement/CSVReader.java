@@ -49,7 +49,6 @@ public class CSVReader {
 
                         case 13: // CR
 
-
                             // if there is a CR in the unescaped field, need to check if there is a LF
                             c = reader.read();
                             if (c == 10) {
