@@ -88,7 +88,19 @@ public class Main {
 		
 		
 		Userinterface.printAvailableActionsOptions(filenames_3);
-		
-		
+
+		//testing speed <120000ms
+		long startTime = System.currentTimeMillis();
+		long endTime = System.currentTimeMillis();
+		long elapsedTime = endTime - startTime;
+		System.out.println("Elapsed time: " + elapsedTime + " milliseconds");
+
+		PropertyReader test2 =new PropertyReader("properties.csv");
+		List<Property> propertyDataList = test2.getPropertiesDataList();
+
+//    for(int i =0;i<100;i++){
+//       System.out.println(propertyDataList.get(i).toString());
+//    }
+
 	}
 }
