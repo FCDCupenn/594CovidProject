@@ -1,5 +1,8 @@
 package edu.upenn.cit594.ui;
 
+import edu.upenn.cit594.processor.CovidDataProcessor;
+import edu.upenn.cit594.processor.PropertyAnalyzer;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +13,14 @@ import java.util.regex.Pattern;
 
 public class Userinterface {
 	
-	
+	private static PropertyAnalyzer propertyAnalyzer;
+	private static CovidDataProcessor covidDataProcessor;
+
+	public Userinterface (PropertyAnalyzer propertyAnalyzer, CovidDataProcessor covidDataProcessor){
+		this.propertyAnalyzer = propertyAnalyzer;
+		this.covidDataProcessor = covidDataProcessor;
+
+	}
 
 	/**
 	 * this method will check if all input files are valid
@@ -139,6 +149,24 @@ public class Userinterface {
 		}
 		System.out.println("END OUTPUT");
 		
+	}
+
+	public void printAvgMarketValue(String input){
+		int AvgMarketValue = propertyAnalyzer.getAverageMarketValue(input);
+		System.out.println("The Average Market Value in Area " + input +" is: " + AvgMarketValue);
+	}
+
+	public  void printAvgTotalLivableArea(String input){
+		int AvgLivableValue = propertyAnalyzer.getAverageLivableArea(input);
+		System.out.println("The Average Total Livable Area in " + input +" is: " + AvgLivableValue);
+
+	}
+
+	public  void printValuePerCapita(String input){
+		int AvgValuePerCapita = propertyAnalyzer.getATotalMarketValuePerCapita(input);
+		System.out.println("The Average Total Market Value Per Capita in " + input +" is: " + AvgValuePerCapita);
+
+
 	}
 	
 	/**
