@@ -24,7 +24,10 @@ public class PropertyAnalyzer {
         propertyDataSet = reader.getPropertyList();
         populationDataSet =reader.getPopulationList();
     }
-
+//testing
+    public Map<String, Integer> getHaspmap(){
+        return avgMaketValueStorage;
+    }
 
 
 
@@ -47,7 +50,7 @@ public class PropertyAnalyzer {
         }
         int avgMarketValue =(int) Math.floor(totalMarketValue/numOfProperty);
         avgMaketValueStorage.put(inputZipcode, avgMarketValue);
-        return avgMarketValue;    }
+        return avgMarketValue; }
 
 
     public int getAverageLivableArea( String inputZipcode) {
@@ -67,7 +70,7 @@ public class PropertyAnalyzer {
             return 0;
         }
         int avgreLivableArea =(int) Math.floor(totallivableArea/numOfProperty);
-        avgMaketValueStorage.put(inputZipcode, avgreLivableArea);
+        avgLivableAreaStorage.put(inputZipcode, avgreLivableArea);
         return avgreLivableArea;
     }
 
