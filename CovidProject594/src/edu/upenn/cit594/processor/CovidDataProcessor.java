@@ -219,4 +219,27 @@ public class CovidDataProcessor {
 		return res;
 	}
 	
+	
+	/**
+	 * This method will the total hopstialized people per zip per capta for the whole time
+	 * @param zipCode
+	 * @return a double that represent the capita 
+	 */
+	public double getTotalHospitalizedPerZipPerCapita(String zipCode){
+		int count = 0;
+		// get the total hospitalized people
+		for (int i = 0; i < covidDataSet.size(); i++) {
+			if (covidDataSet.get(i).getZipCode().equals(zipCode)) {
+				count += covidDataSet.get(i).getHospitalization();
+			}
+		}
+		int numerator = count;
+		Long denominator = populationMap.get(zipCode);
+		Double countPerCapita = (double)numerator / denominator;
+		
+		countPerCapita = (double) Math.round(countPerCapita * 10000) / 10000;
+		
+		return countPerCapita;
+		
+	}
 }
