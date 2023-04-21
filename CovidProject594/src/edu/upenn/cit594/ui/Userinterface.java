@@ -37,27 +37,33 @@ public class Userinterface {
 			Matcher m1 = p1.matcher(s);
 			// if it matches
 			if (m1.find()) {
-				// check if the file existed 
-				File file = new File(s);
-				if(file.exists()) {
+				
+				
+			
 					// if the file exists
 					// check the name argument
 					for (int i = 0; i< prefix.length; i++) {
 						if (s.startsWith(prefix[i])) {
-							// if the file contain the prefix, need to check if there is a duplicate
+							// if the file contain the prefix, check if this file exist
 							
-							// the index will always start at 0
-							int index = s.substring(prefix[i].length()-1).indexOf(prefix[i]);
-							// if there is a replicate, then index will not be -1
-							// so it will return false
-							if (index != -1) return false;
+							File file = new File(s.substring(prefix[i].length()));
+							
+							if (file.exists()) {
+								//need to check if there is a duplicate				
+								// the index will always start at 0
+								int index = s.substring(prefix[i].length()-1).indexOf(prefix[i]);
+								// if there is a replicate, then index will not be -1
+								// so it will return false
+								if (index != -1) return false;
+							}
+							else 
+								return false;
+							
 						}
 					}
 									
-				}
-				else {
-					return false;
-				}
+				
+				
 			}
 			else {
 				return false;
@@ -133,6 +139,30 @@ public class Userinterface {
 	 */
 	
 	public static void printAvailableActionsOptions(String[] filenames){
+//		String[] availableActions = {"Exit the program",
+//				"Show the available actions",
+//				"Show the total population for all ZIP Codes",
+//				"Show the total vaccinations per capita for each ZIP Code for the specified date",
+//				"Show the average market value for properties in a specified ZIP Code",
+//				"Show the average total livable area for properties in a specified ZIP Code",
+//				"Show the total market value of properties, per capita, for a specified ZIP Code",
+//				"Show the results of your custom feature"};
+		List<Integer> options = new ArrayList<>();
+		options = getAvailableActionsOptions(filenames);
+		System.out.println("BEGIN OUTPUT");
+		for (int i = 0; i < options.size(); i++) {
+			System.out.println(options.get(i));
+		}
+		System.out.println("END OUTPUT");
+		
+	}
+	
+	/**
+	 * this will print out the available actions
+	 * @param filenames
+	 */
+	
+	public static void printManu(){
 		String[] availableActions = {"Exit the program",
 				"Show the available actions",
 				"Show the total population for all ZIP Codes",
@@ -141,14 +171,9 @@ public class Userinterface {
 				"Show the average total livable area for properties in a specified ZIP Code",
 				"Show the total market value of properties, per capita, for a specified ZIP Code",
 				"Show the results of your custom feature"};
-		List<Integer> options = new ArrayList<>();
-		options = getAvailableActionsOptions(filenames);
-		System.out.println("BEGIN OUTPUT");
-		for (int i = 0; i < options.size(); i++) {
-			System.out.println(String.valueOf(options.get(i)) + ". " + availableActions[options.get(i)]);
+		for (int i = 0; i < availableActions.length; i++) {
+			System.out.println(i + ". " + availableActions[i]);
 		}
-		System.out.println("END OUTPUT");
-		
 	}
 
 	public void printAvgMarketValue(String input){
@@ -207,9 +232,28 @@ public class Userinterface {
 	}
 	
 	
+	// addtion feature
+	
+	public static void printAdditionalFeature (Map<Double, Integer> TotalHospitalizedAndTotalMarketValuePerCapita) {
+		System.out.println("BEGIN OUTPUT");
+		System.out.println("Hositalized PerCapita  Total Market value Per Capita");
+		for (Map.Entry<Double, Integer> pfc : TotalHospitalizedAndTotalMarketValuePerCapita.entrySet()) {
+			System.out.print(pfc.getKey() + "                 ");
+			System.out.println(pfc.getValue());
+		}
+		
+		System.out.println("END OUTPUT");
+	}
 	
 	
-	
+	public static boolean checkDateFormat(String date) {
+		String regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)";
+		Pattern p1 = Pattern.compile(regex);
+		Matcher m1 = p1.matcher(date);
+		if (m1.find()) return true;
+		return false;
+		
+	}
 	
 	
 }
