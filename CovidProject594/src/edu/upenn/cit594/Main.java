@@ -104,7 +104,7 @@ public class Main {
 				System.out.println("Please Type zipcode");
 				input = scanner.next();
 				if(input!=null){
-					logger.log("opened file: " + args[1] + " User input: " + input + " resulet: " + ui.printAvgMarketValue(input));
+					logger.log("opened file: " + args[1] + " User input: " + input + " result: " + ui.printAvgMarketValue(input));
 					break;}
 				else{
 					break;}
@@ -113,7 +113,7 @@ public class Main {
 					System.out.println("Please Type zipcode");
 					input = scanner.next();
 					if(input!=null){
-					logger.log("opened file: " + args[1] + " User input: " + input + " resulet: " + ui.printAvgTotalLivableArea(input));
+					logger.log("opened file: " + args[1] + args[2] + " User input: " + input + " result: " + ui.printAvgTotalLivableArea(input));
 					break;}
 					else{
 						break;}
