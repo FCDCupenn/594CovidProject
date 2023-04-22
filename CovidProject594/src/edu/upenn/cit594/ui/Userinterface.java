@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 
 public class Userinterface {
 	
-	private static PropertyAnalyzer propertyAnalyzer;
-	private static CovidDataProcessor covidDataProcessor;
+	private  PropertyAnalyzer propertyAnalyzer;
+	private  CovidDataProcessor covidDataProcessor;
 
 	public Userinterface (PropertyAnalyzer propertyAnalyzer, CovidDataProcessor covidDataProcessor){
 		this.propertyAnalyzer = propertyAnalyzer;
@@ -37,8 +37,6 @@ public class Userinterface {
 			Matcher m1 = p1.matcher(s);
 			// if it matches
 			if (m1.find()) {
-				
-				
 			
 					// if the file exists
 					// check the name argument
@@ -58,12 +56,9 @@ public class Userinterface {
 							}
 							else 
 								return false;
-							
 						}
 					}
-									
-				
-				
+
 			}
 			else {
 				return false;
@@ -176,21 +171,22 @@ public class Userinterface {
 		}
 	}
 
-	public void printAvgMarketValue(String input){
+	public String printAvgMarketValue(String input){
 		int AvgMarketValue = propertyAnalyzer.getAverageMarketValue(input);
 		System.out.println("The Average Market Value in Area " + input +" is: " + AvgMarketValue);
+		return "The Average Market Value in Area " + input +" is: " + AvgMarketValue;
 	}
 
-	public  void printAvgTotalLivableArea(String input){
+	public  String printAvgTotalLivableArea(String input){
 		int AvgLivableValue = propertyAnalyzer.getAverageLivableArea(input);
 		System.out.println("The Average Total Livable Area in " + input +" is: " + AvgLivableValue);
-
+		return "The Average Total Livable Area in " + input + " is: " + AvgLivableValue;
 	}
 
-	public  void printValuePerCapita(String input){
+	public  String printValuePerCapita(String input){
 		int AvgValuePerCapita = propertyAnalyzer.getATotalMarketValuePerCapita(input);
 		System.out.println("The Average Total Market Value Per Capita in " + input +" is: " + AvgValuePerCapita);
-
+		return "The Average Total Market Value Per Capita in " + input +" is: " + AvgValuePerCapita;
 
 	}
 	

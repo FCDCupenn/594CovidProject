@@ -13,6 +13,7 @@ import edu.upenn.cit594.datamanagement.CSVCovidReader;
 import edu.upenn.cit594.datamanagement.JSONFileReader;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertyReader;
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.AdditionalFeatureProcessor;
 import edu.upenn.cit594.processor.CovidDataProcessor;
 import edu.upenn.cit594.processor.PopulationDataProcessor;
@@ -36,19 +37,25 @@ public class Main {
 		String[] files = args;
 		String[] finalFiles = null;
 		// check if files are valid
-		if (Userinterface.checkValidFileNames(files)) {
-			finalFiles = FileCreater.createFiles(files);
-			for (int i = 0; i < finalFiles.length; i++) {
-				System.out.println(finalFiles[i]);
-			}
-		}
-		else {
-			return;
-		}
-		
+//		if (Userinterface.checkValidFileNames(files)) {
+//			finalFiles = FileCreater.createFiles(files);
+//			for (int i = 0; i < finalFiles.length; i++) {
+//				System.out.println(finalFiles[i]);
+//			}
+//		}
+//		else {
+//			System.out.println("file is not valid");
+//			return;
+//		}
+
 		// intial reader
 		AlmightyReader reader_final  = new AlmightyReader(finalFiles);
 		CovidDataProcessor cdp_final = new CovidDataProcessor(reader_final);
+		PropertyAnalyzer property_csv = new PropertyAnalyzer(reader_final);
+		Userinterface ui = new Userinterface(property_csv, cdp_final);
+		Logger logger = Logger.getInstance();
+		logger.setLogFile(files[3]);
+
 
 		Scanner scanner = new Scanner(System.in);
 		int choice = 0;
@@ -58,11 +65,11 @@ public class Main {
 		
 		// display the inital input
 		Userinterface.printManu();
-		
+
 		do {
 			choice = scanner.nextInt();
 			switch (choice) {
-
+			case 0: System.out.println("Exit!"); return;
 			case 1:
 				Userinterface.printAvailableActionsOptions(files);
 			case 2:
@@ -78,7 +85,7 @@ public class Main {
 					else {
 						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD");
 					}
-					
+
 				}
 				else if (input.equals("full")) {
 					System.out.println("please enter a date in the format: YYYY-MM-DD");
@@ -88,30 +95,53 @@ public class Main {
 					else {
 						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD");
 					}
-					
+
 				}
 				else
 					System.out.println("Please Type partial or full");
-				
+
 			case 4:
-			case 5:
-			case 6:
+				System.out.println("Please Type zipcode");
+				input = scanner.next();
+				if(input!=null){
+					logger.log("opened file: " + args[1] + " User input: " + input + " resulet: " + ui.printAvgMarketValue(input));
+					break;}
+				else{
+					break;}
+
+				case 5:
+					System.out.println("Please Type zipcode");
+					input = scanner.next();
+					if(input!=null){
+					logger.log("opened file: " + args[1] + " User input: " + input + " resulet: " + ui.printAvgTotalLivableArea(input));
+					break;}
+					else{
+						break;}
+
+
+				case 6:
+					System.out.println("Please Type zipcode");
+					input = scanner.next();
+					if(input!=null){
+						logger.log("opened file: " + args[1] + " User input: " + input + " resulet: " + ui.printValuePerCapita(input));
+						break;}
+					else{
+						break;}
+
 			case 7:
 
 			default:
 				System.out.println("invlid, try again");
 				break;
 			}
-		} 
+		}
 		while (choice < 8);
-		
-		
-		
+
+
 		long startTime = System.currentTimeMillis();
 		
 		// construct the new file array input from the args
-		
-		
+
 		
 		// only for test.....
 		String[] filenames_1 = {"covid_data.json", "properties.csv", "population.csv", "log_1"};
@@ -135,35 +165,24 @@ public class Main {
 		 date = "2021-03-25";
 		String partial = "partial";
 		String full = "full";
+		String zipcode ="19131";
 //		System.out.println(
 //		cdp_json.getpartialOrFullVacPerCapita(date, partial));
 //		System.out.println(
 //		cdp_csv.getpartialOrFullVacPerCapita(date, partial));
 //		
 		Userinterface.printTotalPartialOrFullVacPerCapita(cdp_json.getpartialOrFullVacPerCapita(date, partial));
-	
-		
 		Userinterface.printTotalNegOrPosVacPerCapita(cdp_final.getTotalNegOrPosVacPerZipCodePerDatePerCapita(date, "negative"));
-		
-		
 		Userinterface.printAvailableActionsOptions(filenames_3);
 
-		PropertyAnalyzer property_csv = new PropertyAnalyzer(reader_csv);
-		Userinterface ui = new Userinterface(property_csv, cdp_csv);
 
-		String zipcode ="19131";
-		ui.printAvgMarketValue(zipcode);
-		ui.printAvgTotalLivableArea(zipcode);
-		ui.printValuePerCapita(zipcode);
-		
 		
 		// addtional feature 
 		AdditionalFeatureProcessor afp = new AdditionalFeatureProcessor(cdp_final, property_csv);
-		
 		Userinterface.printAdditionalFeature(afp.getTotalHospitalizedAndTotalMarketValuePerCapita(zipcode));
 
 		//testing speed <120000ms
-		
+
 		long endTime = System.currentTimeMillis();
 		long elapsedTime = endTime - startTime;
 		System.out.println("Elapsed time: " + elapsedTime + " milliseconds");

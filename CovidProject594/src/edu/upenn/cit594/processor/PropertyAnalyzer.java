@@ -30,8 +30,6 @@ public class PropertyAnalyzer {
     }
 
 
-
-
     public int getAverageMarketValue( String inputZipcode) {
         if(avgMaketValueStorage.containsKey(inputZipcode)){
             return avgMaketValueStorage.get(inputZipcode);

@@ -26,9 +26,10 @@ public class Logger {
     }
 
     public void log(String text) {
+        long time = System.currentTimeMillis();
         if (writer != null) {
             //writes a log message to the file
-            writer.println(text);
+            writer.println("Current time" + time + "text" +text);
             //flushes the buffer
             writer.flush();
         } else {
