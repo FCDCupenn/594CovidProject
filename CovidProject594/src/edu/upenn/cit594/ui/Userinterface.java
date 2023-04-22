@@ -1,6 +1,8 @@
 package edu.upenn.cit594.ui;
 
+import edu.upenn.cit594.processor.AdditionalFeatureProcessor;
 import edu.upenn.cit594.processor.CovidDataProcessor;
+import edu.upenn.cit594.processor.PopulationDataProcessor;
 import edu.upenn.cit594.processor.PropertyAnalyzer;
 
 import java.io.File;
@@ -15,57 +17,16 @@ public class Userinterface {
 	
 	private  PropertyAnalyzer propertyAnalyzer;
 	private  CovidDataProcessor covidDataProcessor;
+	private AdditionalFeatureProcessor additionFeatureProcessor;
 
-	public Userinterface (PropertyAnalyzer propertyAnalyzer, CovidDataProcessor covidDataProcessor){
+	public Userinterface (PropertyAnalyzer propertyAnalyzer, CovidDataProcessor covidDataProcessor, AdditionalFeatureProcessor additionFeatureProcessor){
 		this.propertyAnalyzer = propertyAnalyzer;
 		this.covidDataProcessor = covidDataProcessor;
+		this.additionFeatureProcessor = additionFeatureProcessor;
 
 	}
 
-	/**
-	 * this method will check if all input files are valid
-	 * @param filenames
-	 * @return return true if the file is valid
-	 */
-	public static boolean checkValidFileNames(String[] filenames){
-		
-		String [] prefix = {"--covid=", "--properties=", "--population=", "--log="};
-		// check format
-		String regex = "^--(?<name>.+?)=(?<value>.+)$";
-		Pattern p1 = Pattern.compile(regex);
-		for (String s : filenames) {
-			Matcher m1 = p1.matcher(s);
-			// if it matches
-			if (m1.find()) {
-			
-					// if the file exists
-					// check the name argument
-					for (int i = 0; i< prefix.length; i++) {
-						if (s.startsWith(prefix[i])) {
-							// if the file contain the prefix, check if this file exist
-							
-							File file = new File(s.substring(prefix[i].length()));
-							
-							if (file.exists()) {
-								//need to check if there is a duplicate				
-								// the index will always start at 0
-								int index = s.substring(prefix[i].length()-1).indexOf(prefix[i]);
-								// if there is a replicate, then index will not be -1
-								// so it will return false
-								if (index != -1) return false;
-							}
-							else 
-								return false;
-						}
-					}
-
-			}
-			else {
-				return false;
-			}
-		}
-		return true;
-	}
+	
 	
 	
 	
@@ -74,7 +35,7 @@ public class Userinterface {
 	 * @param filenames [covid_data, properties_data, population_data, log_file]
 	 * @return
 	 */
-	private static List<Integer> getAvailableActionsOptions(String[] filenames) {
+	public  List<Integer> getAvailableActionsOptions(String[] filenames) {
 		// assume all files are correct	
 		// population data will have option 2
 		// covid data will have 3, 7 only when population data exist
@@ -133,7 +94,7 @@ public class Userinterface {
 	 * @param filenames
 	 */
 	
-	public static void printAvailableActionsOptions(String[] filenames){
+	public  void printAvailableActionsOptions(String[] filenames){
 //		String[] availableActions = {"Exit the program",
 //				"Show the available actions",
 //				"Show the total population for all ZIP Codes",
@@ -157,7 +118,7 @@ public class Userinterface {
 	 * @param filenames
 	 */
 	
-	public static void printManu(){
+	public  void printManu(){
 		String[] availableActions = {"Exit the program",
 				"Show the available actions",
 				"Show the total population for all ZIP Codes",
@@ -194,7 +155,8 @@ public class Userinterface {
 	 * This method will print out the total population 
 	 * @param count
 	 */
-	public static void printTotalPopulationForAllZipCodes(long count) {
+	public  void printTotalPopulationForAllZipCodes() {
+		long count = PopulationDataProcessor.totalPoplulation(covidDataProcessor.populationList);
 		System.out.println("BEGIN OUTPUT");
 		System.out.println(count);
 		System.out.println("END OUTPUT");
@@ -205,7 +167,8 @@ public class Userinterface {
 	 * This method will print out the total partial or full vaction per captia
 	 * @param partialorFullPerCapita
 	 */
-	public static void printTotalPartialOrFullVacPerCapita(Map<String, Double> partialorFullPerCapita) {
+	public void printTotalPartialOrFullVacPerCapita(String date, String partialOrFull) {
+		Map<String, Double> partialorFullPerCapita = covidDataProcessor.getpartialOrFullVacPerCapita(date, partialOrFull);
 		System.out.println("BEGIN OUTPUT");
 		for (Map.Entry<String, Double> pfc : partialorFullPerCapita.entrySet()) {
 			System.out.print(pfc.getKey() + " ");
@@ -214,23 +177,25 @@ public class Userinterface {
 		System.out.println("END OUTPUT");
 	}
 	
-	/**
-	 * This method will print out the total negative or vaccine per capita 
-	 * @param partialorFullPerCapita
-	 */
-	public static void printTotalNegOrPosVacPerCapita(Map<String, Double> negOrPos) {
-		System.out.println("BEGIN OUTPUT");
-		for (Map.Entry<String, Double> pfc : negOrPos.entrySet()) {
-			System.out.print(pfc.getKey() + " ");
-			System.out.println(pfc.getValue());
-		}
-		System.out.println("END OUTPUT");
-	}
-	
+//	/**
+//	 * This method will print out the total negative or vaccine per capita 
+//	 * @param partialorFullPerCapita
+//	 */
+//	public  void printTotalNegOrPosVacPerCapita(Map<String, Double> negOrPos) {
+//		System.out.println("BEGIN OUTPUT");
+//		for (Map.Entry<String, Double> pfc : negOrPos.entrySet()) {
+//			System.out.print(pfc.getKey() + " ");
+//			System.out.println(pfc.getValue());
+//		}
+//		System.out.println("END OUTPUT");
+//	}
+//	
 	
 	// addtion feature
 	
-	public static void printAdditionalFeature (Map<Double, Integer> TotalHospitalizedAndTotalMarketValuePerCapita) {
+	public  void printAdditionalFeature (String zipCode) {
+		Map<Double, Integer> TotalHospitalizedAndTotalMarketValuePerCapita 
+		= additionFeatureProcessor.getTotalHospitalizedAndTotalMarketValuePerCapita(zipCode);
 		System.out.println("BEGIN OUTPUT");
 		System.out.println("Hositalized PerCapita  Total Market value Per Capita");
 		for (Map.Entry<Double, Integer> pfc : TotalHospitalizedAndTotalMarketValuePerCapita.entrySet()) {
@@ -242,7 +207,7 @@ public class Userinterface {
 	}
 	
 	
-	public static boolean checkDateFormat(String date) {
+	public  boolean checkDateFormat(String date) {
 		String regex = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)";
 		Pattern p1 = Pattern.compile(regex);
 		Matcher m1 = p1.matcher(date);

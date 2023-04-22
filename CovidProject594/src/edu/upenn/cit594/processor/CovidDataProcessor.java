@@ -24,11 +24,8 @@ public class CovidDataProcessor {
 	
 	public AlmightyReader reader;
 	
-	
-	public long totalNumberOfInfection;
-	public long totalNumberBooster;
-	public long totalNumberOfHospitalized;
-	public long totalPopulation;
+	//public Map<String, Double> partialOrFullVacPerCapita = new TreeMap<>();
+
 	
 	
 	public CovidDataProcessor (AlmightyReader reader) {
@@ -84,7 +81,7 @@ public class CovidDataProcessor {
 			
 		}
 		
-		
+
 		return res;
 			
 	}
@@ -226,6 +223,9 @@ public class CovidDataProcessor {
 	 * @return a double that represent the capita 
 	 */
 	public double getTotalHospitalizedPerZipPerCapita(String zipCode){
+		if (!populationMap.containsKey(zipCode)) {
+			return 0.0000;
+		}
 		int count = 0;
 		// get the total hospitalized people
 		for (int i = 0; i < covidDataSet.size(); i++) {

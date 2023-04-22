@@ -30,6 +30,9 @@ public class AlmightyReader {
 	 */
 	public List<Covid> getCovidList() {
 		List<Covid> covidList = new ArrayList<>();
+		if(this.filenames[0] == "") {
+			return covidList;
+		}
 		// read covid file
 		String covidfile = this.filenames[0];
 		// end with text file
@@ -58,6 +61,9 @@ public class AlmightyReader {
 	 */
 	public List<Property> getPropertyList() {
 		List<Property> propertyList = new ArrayList<>();
+		if (filenames[1] == "") {
+			return propertyList;
+		}
 
 		String propertyfile = this.filenames[1];
 		if (propertyfile.toLowerCase().endsWith(".csv")) {
@@ -80,6 +86,9 @@ public class AlmightyReader {
 	 */
 	public List<Population> getPopulationList() {
 		List<Population> populationList = new ArrayList<>();
+		if (filenames[2] == "") {
+			return populationList;
+		}
 
 		String populationFile = this.filenames[2];
 
