@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.upenn.cit594.util.Covid;
+import edu.upenn.cit594.util.FileCreater;
 import edu.upenn.cit594.util.Population;
 import edu.upenn.cit594.util.Property;
 
@@ -15,10 +16,10 @@ public class AlmightyReader {
 	/**
 	 * This will read covid information
 	 */
-	public String filenames[];
+	public Map<String, String> fileNames;
 
-	public AlmightyReader(String[] filenames) {
-		this.filenames = filenames;
+	public AlmightyReader(Map<String, String> fileNames) {
+		this.fileNames = fileNames;
 	};
 
 	/**
@@ -30,11 +31,11 @@ public class AlmightyReader {
 	 */
 	public List<Covid> getCovidList() {
 		List<Covid> covidList = new ArrayList<>();
-		if(this.filenames[0] == "") {
+		if (!fileNames.containsKey(FileCreater.COVID)) {
 			return covidList;
 		}
 		// read covid file
-		String covidfile = this.filenames[0];
+		String covidfile = fileNames.get(FileCreater.COVID);
 		// end with text file
 		if (covidfile.toLowerCase().endsWith(".csv")) {
 			try {
@@ -61,11 +62,11 @@ public class AlmightyReader {
 	 */
 	public List<Property> getPropertyList() {
 		List<Property> propertyList = new ArrayList<>();
-		if (filenames[1] == "") {
+		if (!fileNames.containsKey(FileCreater.PROPERTIES)) {
 			return propertyList;
 		}
 
-		String propertyfile = this.filenames[1];
+		String propertyfile = fileNames.get(FileCreater.PROPERTIES);
 		if (propertyfile.toLowerCase().endsWith(".csv")) {
 			try {
 				propertyList = new PropertyReader(propertyfile).getPropertiesDataList();
@@ -86,11 +87,11 @@ public class AlmightyReader {
 	 */
 	public List<Population> getPopulationList() {
 		List<Population> populationList = new ArrayList<>();
-		if (filenames[2] == "") {
+		if (!fileNames.containsKey(FileCreater.POPULATION)) {
 			return populationList;
 		}
 
-		String populationFile = this.filenames[2];
+		String populationFile = fileNames.get(FileCreater.POPULATION);
 
 		if (populationFile.toLowerCase().endsWith(".csv")) {
 			try {
