@@ -4,9 +4,11 @@ import edu.upenn.cit594.processor.AdditionalFeatureProcessor;
 import edu.upenn.cit594.processor.CovidDataProcessor;
 import edu.upenn.cit594.processor.PopulationDataProcessor;
 import edu.upenn.cit594.processor.PropertyAnalyzer;
+import edu.upenn.cit594.util.FileCreater;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -35,55 +37,39 @@ public class Userinterface {
 	 * @param filenames [covid_data, properties_data, population_data, log_file]
 	 * @return
 	 */
-	public  List<Integer> getAvailableActionsOptions(String[] filenames) {
+	public  List<Integer> getAvailableActionsOptions(Map<String, String> fileNames) {
 		// assume all files are correct	
 		// population data will have option 2
-		// covid data will have 3, 7 only when population data exist
+		// covid data will have 3 only when population data exist
 		// property data will show 4, 5, and show 6 only when population data exist
+		// show 7 when all three data exist
 		List<Integer> options = new ArrayList<>();
 		// all input would have option 0
 		options.add(0);
 		options.add(1);
-		List<Boolean> checkOptions = new ArrayList<>();
 		
+		int count = 0;
 		// construct a checkOptions pannel
-		for (int i = 0; i < filenames.length; i ++) {
-			// the length of the file is not empty, means there is a file
-			if (filenames[i].length() != 0) {
-				checkOptions.add(true);
-			}
-			else checkOptions.add(false);
-		}
-		// check if population data exist
-		if (checkOptions.get(2)) {
+		if (fileNames.containsKey(FileCreater.POPULATION)) {
 			options.add(2);
-			// if covid data exist
-			if (checkOptions.get(0)) {
-				options.add(3);
-				options.add(7);
-			}
-			// if property data exist
-			if (checkOptions.get(1)) {
-				options.add(4);
-				options.add(5);
-				options.add(6);
-			}
-			Collections.sort(options);
-			return options;
-			
+			count++;
 		}
-		else {
-			// only covid exist
-			if (checkOptions.get(0)) {
-				options.add(7);
-			}
-			// if property data exist
-			if (checkOptions.get(1)) {
-				options.add(4);
-				options.add(5);
-
-			}
+		// when covid file and population file exist together
+		if (fileNames.containsKey(FileCreater.COVID) && count == 1) {
+			options.add(3);
+			count++;
 		}
+		if (fileNames.containsKey(FileCreater.PROPERTIES)) {
+			List<Integer> listOfNumbers = Arrays.asList(4, 5, 6);
+			options.addAll(listOfNumbers);
+			count++;
+		}
+		// when 3 files exists together
+		if (count == 3) {
+			options.add(7);
+		}
+		
+		
 		Collections.sort(options);
 		return options;
 		
@@ -94,7 +80,7 @@ public class Userinterface {
 	 * @param filenames
 	 */
 	
-	public  void printAvailableActionsOptions(String[] filenames){
+	public  void printAvailableActionsOptions(Map<String, String> fileNames){
 //		String[] availableActions = {"Exit the program",
 //				"Show the available actions",
 //				"Show the total population for all ZIP Codes",
@@ -104,7 +90,7 @@ public class Userinterface {
 //				"Show the total market value of properties, per capita, for a specified ZIP Code",
 //				"Show the results of your custom feature"};
 		List<Integer> options = new ArrayList<>();
-		options = getAvailableActionsOptions(filenames);
+		options = getAvailableActionsOptions(fileNames);
 		System.out.println("BEGIN OUTPUT");
 		for (int i = 0; i < options.size(); i++) {
 			System.out.println(options.get(i));

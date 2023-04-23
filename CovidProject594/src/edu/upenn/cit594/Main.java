@@ -42,28 +42,13 @@ public class Main {
 			System.out.println("file names are not valid");
 			return;
 		}
-		String[] finalFiles = FileCreater.createFilesNames(files);
+		// get final map for fileNames
+		Map<String, String> fileNames = FileCreater.createFilesNames(files);
 		Logger logger = Logger.getInstance();;
-		 //check if files are valid
-		try {
-			if (FileCreater.checkFilesExist(finalFiles)) {
-				// create log files
-				File checkLogFile = new File(finalFiles[3]);
-				if (!checkLogFile.exists())
-				logger.setLogFile(finalFiles[3]);
-				
-			}
-			else {
-				System.out.println("file is not valid");
-				return;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		logger.setLogFile(fileNames.get(FileCreater.LOG));
 
 		// intial reader
-		AlmightyReader reader_final  = new AlmightyReader(finalFiles);
+		AlmightyReader reader_final  = new AlmightyReader(fileNames);
 		CovidDataProcessor cdp_final = new CovidDataProcessor(reader_final);
 		PropertyAnalyzer property_csv = new PropertyAnalyzer(reader_final);
 		AdditionalFeatureProcessor afp = new AdditionalFeatureProcessor(cdp_final, property_csv);
@@ -77,7 +62,7 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 		int choice = 0;
 		boolean choiceCheck = false;
-		List<Integer> userOptions = ui.getAvailableActionsOptions(finalFiles);
+		List<Integer> userOptions = ui.getAvailableActionsOptions(fileNames);
 		String input = null;
 		String date = null; 
 		
@@ -114,7 +99,7 @@ public class Main {
 			switch (choice) {
 			case 0: System.out.println("Exit!"); return;
 			case 1:
-				ui.printAvailableActionsOptions(finalFiles);
+				ui.printAvailableActionsOptions(fileNames);
 				break;			
 			case 2:
 				ui.printTotalPopulationForAllZipCodes();
@@ -137,6 +122,7 @@ public class Main {
 				}
 				else if (input.equals("full")) {
 					System.out.println("please enter a date in the format: YYYY-MM-DD");
+					date = scanner.next();
 					if (ui.checkDateFormat(date)) {
 						ui.printTotalPartialOrFullVacPerCapita(date, "full");
 					}
@@ -154,7 +140,7 @@ public class Main {
 				System.out.println("Please Type zipcode");
 				input = scanner.next();
 				if(input!=null){
-					logger.log("opened file: " + finalFiles[1] + " User input: " + input + " result: " + ui.printAvgMarketValue(input));
+					logger.log("opened file: " + fileNames.get(FileCreater.PROPERTIES) + " User input: " + input + " result: " + ui.printAvgMarketValue(input));
 					break;}
 				else{
 					break;}
@@ -163,7 +149,7 @@ public class Main {
 					System.out.println("Please Type zipcode");
 					input = scanner.next();
 					if(input!=null){
-					logger.log("opened file: " + finalFiles[1] + finalFiles[2] + " User input: " + input + " result: " + ui.printAvgTotalLivableArea(input));
+					logger.log("opened file: " + fileNames.get(FileCreater.PROPERTIES) + fileNames.get(FileCreater.POPULATION) + " User input: " + input + " result: " + ui.printAvgTotalLivableArea(input));
 					break;}
 					else{
 						break;}
@@ -173,7 +159,7 @@ public class Main {
 					System.out.println("Please Type zipcode");
 					input = scanner.next();
 					if(input!=null){
-						logger.log("opened file: " + finalFiles[1] + " User input: " + input + " result: " + ui.printValuePerCapita(input));
+						logger.log("opened file: " + fileNames.get(FileCreater.PROPERTIES) + " User input: " + input + " result: " + ui.printValuePerCapita(input));
 						break;}
 					else{
 						break;}
@@ -182,7 +168,8 @@ public class Main {
 				System.out.println("Please Type zipcode");
 				input = scanner.next();
 				if(input!=null){
-					logger.log("opened file: " + finalFiles[1] + " User input: " + input);
+					logger.log("opened file: " +fileNames.get(FileCreater.COVID)+ fileNames.get(FileCreater.PROPERTIES)
+					+ fileNames.get(FileCreater.POPULATION)+ " User input: " + input);
 					}
 				ui.printAdditionalFeature(input);
 				break;
