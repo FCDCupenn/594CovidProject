@@ -7,7 +7,6 @@ import edu.upenn.cit594.processor.PopulationDataProcessor;
 import edu.upenn.cit594.processor.PropertyAnalyzer;
 import edu.upenn.cit594.util.FileCreater;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -125,23 +124,25 @@ public class Userinterface {
 		}
 	}
 
-	public String printAvgMarketValue(String input){
+	public void printAvgMarketValue(String input){
+		Logger l = Logger.getInstance();
 		int AvgMarketValue = propertyAnalyzer.getAverageMarketValue(input);
-		System.out.println("The Average Market Value in Area " + input +" is: " + AvgMarketValue);
-		return "The Average Market Value in Area " + input +" is: " + AvgMarketValue;
+		System.out.println("BEGIN OUTPUT" +"\n" + AvgMarketValue +"\n" + "END OUTPUT");
+		l.log("result " + AvgMarketValue);
 	}
 
-	public  String printAvgTotalLivableArea(String input){
+	public  void printAvgTotalLivableArea(String input) {
+		Logger l = Logger.getInstance();
 		int AvgLivableValue = propertyAnalyzer.getAverageLivableArea(input);
-		System.out.println("The Average Total Livable Area in " + input +" is: " + AvgLivableValue);
-		return "The Average Total Livable Area in " + input + " is: " + AvgLivableValue;
+		System.out.println("BEGIN OUTPUT" + "\n" + AvgLivableValue + "\n" + "END OUTPUT");
+		l.log("result " + AvgLivableValue);
 	}
 
-	public  String printValuePerCapita(String input){
+	public  void printValuePerCapita(String input){
+		Logger l = Logger.getInstance();
 		int AvgValuePerCapita = propertyAnalyzer.getATotalMarketValuePerCapita(input);
-		System.out.println("The Average Total Market Value Per Capita in " + input +" is: " + AvgValuePerCapita);
-		return "The Average Total Market Value Per Capita in " + input +" is: " + AvgValuePerCapita;
-
+		System.out.println("BEGIN OUTPUT" +"\n" + AvgValuePerCapita +"\n" + "END OUTPUT");
+		l.log("result " + AvgValuePerCapita);
 	}
 	
 	/**

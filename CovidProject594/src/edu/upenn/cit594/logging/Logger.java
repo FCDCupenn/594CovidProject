@@ -29,7 +29,7 @@ public class Logger {
         long time = System.currentTimeMillis();
         if (writer != null) {
             //writes a log message to the file
-            writer.println("Current time" + time + " " + text);
+            writer.println(time + " " + text);
             //flushes the buffer
             writer.flush();
         } else {

@@ -49,7 +49,6 @@ public class PropertyReader {
             } catch (CSVFormatException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("peoperty data List size:"+ propertyDataList.size());
 
 
         }
