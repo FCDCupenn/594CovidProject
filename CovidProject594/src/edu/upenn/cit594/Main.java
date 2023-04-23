@@ -99,12 +99,15 @@ public class Main {
 			switch (choice) {
 			case 0: System.out.println("Exit!"); return;
 			case 1:
+				logger.log(" User input: " + choice);
 				ui.printAvailableActionsOptions(fileNames);
 				break;			
 			case 2:
+				logger.log("opened file: " + fileNames.get(FileCreater.POPULATION) + "User input: " + choice);
 				ui.printTotalPopulationForAllZipCodes();
 				break;
 			case 3:
+				logger.log(" User input: " + choice);
 				System.out.println("Type partial or full");
 				input = scanner.next();
 				if (input.equals("partial")) {
@@ -112,7 +115,9 @@ public class Main {
 					date = scanner.next();
 					
 					if (ui.checkDateFormat(date)) {
+						logger.log("opened file: " + fileNames.get(FileCreater.COVID) + " User input: " + date + " " + input);
 						ui.printTotalPartialOrFullVacPerCapita(date, "partial");
+						
 					}
 					else {
 						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD");
@@ -124,9 +129,10 @@ public class Main {
 					System.out.println("please enter a date in the format: YYYY-MM-DD");
 					date = scanner.next();
 					if (ui.checkDateFormat(date)) {
+						logger.log("opened file: " + fileNames.get(FileCreater.COVID) + " User input: " + date + " " + input);
 						ui.printTotalPartialOrFullVacPerCapita(date, "full");
 					}
-					else {
+					else {	
 						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD");
 						break;
 					}
@@ -137,15 +143,19 @@ public class Main {
 					break;
 
 			case 4:
+				logger.log(" User input: " + choice);
 				System.out.println("Please Type zipcode");
 				input = scanner.next();
 				if(input!=null){
 					logger.log("opened file: " + fileNames.get(FileCreater.PROPERTIES) + " User input: " + input + " result: " + ui.printAvgMarketValue(input));
-					break;}
+					
+					break;
+					}
 				else{
 					break;}
 
 				case 5:
+					logger.log(" User input: " + choice);
 					System.out.println("Please Type zipcode");
 					input = scanner.next();
 					if(input!=null){
@@ -156,6 +166,7 @@ public class Main {
 
 
 				case 6:
+					logger.log(" User input: " + choice);
 					System.out.println("Please Type zipcode");
 					input = scanner.next();
 					if(input!=null){
@@ -165,6 +176,7 @@ public class Main {
 						break;}
 
 			case 7: 
+				logger.log(" User input: " + choice);
 				System.out.println("Please Type zipcode");
 				input = scanner.next();
 				if(input!=null){
@@ -204,6 +216,8 @@ public class Main {
 			
 			
 		}
+		logger.close();
+		
 		
 
 

@@ -1,5 +1,6 @@
 package edu.upenn.cit594.ui;
 
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.AdditionalFeatureProcessor;
 import edu.upenn.cit594.processor.CovidDataProcessor;
 import edu.upenn.cit594.processor.PopulationDataProcessor;
@@ -81,6 +82,7 @@ public class Userinterface {
 	 */
 	
 	public  void printAvailableActionsOptions(Map<String, String> fileNames){
+		Logger l = Logger.getInstance();
 //		String[] availableActions = {"Exit the program",
 //				"Show the available actions",
 //				"Show the total population for all ZIP Codes",
@@ -91,11 +93,16 @@ public class Userinterface {
 //				"Show the results of your custom feature"};
 		List<Integer> options = new ArrayList<>();
 		options = getAvailableActionsOptions(fileNames);
+		for(Map.Entry<String, String> filename : fileNames.entrySet()) {
+			l.log("filenames " + filename.getValue());
+		}
 		System.out.println("BEGIN OUTPUT");
-		for (int i = 0; i < options.size(); i++) {
+		for (int i = 0; i < options.size(); i++) {	
 			System.out.println(options.get(i));
+			l.log("result " + options.get(i));
 		}
 		System.out.println("END OUTPUT");
+		
 		
 	}
 	
@@ -142,10 +149,13 @@ public class Userinterface {
 	 * @param count
 	 */
 	public  void printTotalPopulationForAllZipCodes() {
+		Logger l = Logger.getInstance();
 		long count = PopulationDataProcessor.totalPoplulation(covidDataProcessor.populationList);
 		System.out.println("BEGIN OUTPUT");
 		System.out.println(count);
 		System.out.println("END OUTPUT");
+		l.log("result " + count);
+		
 	}
 	
 	
@@ -154,32 +164,25 @@ public class Userinterface {
 	 * @param partialorFullPerCapita
 	 */
 	public void printTotalPartialOrFullVacPerCapita(String date, String partialOrFull) {
+		Logger l = Logger.getInstance();
 		Map<String, Double> partialorFullPerCapita = covidDataProcessor.getpartialOrFullVacPerCapita(date, partialOrFull);
 		System.out.println("BEGIN OUTPUT");
-		for (Map.Entry<String, Double> pfc : partialorFullPerCapita.entrySet()) {
+		for (Map.Entry<String, Double> pfc : partialorFullPerCapita.entrySet()) {		
 			System.out.print(pfc.getKey() + " ");
 			System.out.println(pfc.getValue());
+			l.log("result " + pfc.getKey() + " " + pfc.getValue());
 		}
 		System.out.println("END OUTPUT");
+	
+		
 	}
 	
-//	/**
-//	 * This method will print out the total negative or vaccine per capita 
-//	 * @param partialorFullPerCapita
-//	 */
-//	public  void printTotalNegOrPosVacPerCapita(Map<String, Double> negOrPos) {
-//		System.out.println("BEGIN OUTPUT");
-//		for (Map.Entry<String, Double> pfc : negOrPos.entrySet()) {
-//			System.out.print(pfc.getKey() + " ");
-//			System.out.println(pfc.getValue());
-//		}
-//		System.out.println("END OUTPUT");
-//	}
-//	
+
 	
 	// addtion feature
 	
 	public  void printAdditionalFeature (String zipCode) {
+		Logger l = Logger.getInstance();
 		Map<Double, Integer> TotalHospitalizedAndTotalMarketValuePerCapita 
 		= additionFeatureProcessor.getTotalHospitalizedAndTotalMarketValuePerCapita(zipCode);
 		System.out.println("BEGIN OUTPUT");
@@ -187,6 +190,7 @@ public class Userinterface {
 		for (Map.Entry<Double, Integer> pfc : TotalHospitalizedAndTotalMarketValuePerCapita.entrySet()) {
 			System.out.print(pfc.getKey() + "                 ");
 			System.out.println(pfc.getValue());
+			l.log("result " + pfc.getKey() + " " + pfc.getValue());
 		}
 		
 		System.out.println("END OUTPUT");
