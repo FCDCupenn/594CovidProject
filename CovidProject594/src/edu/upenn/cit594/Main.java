@@ -60,7 +60,8 @@ public class Main {
 		logger.log(argsline);
 
 		Scanner scanner = new Scanner(System.in);
-		int choice = 0;
+//		int choice =0;
+		int choice = -1;
 		boolean choiceCheck = false;
 		List<Integer> userOptions = ui.getAvailableActionsOptions(fileNames);
 		String input = null;
@@ -70,29 +71,46 @@ public class Main {
 		// display the inital input
 		ui.printManu();
 		// input the a number
-		System.out.println(">");
-		choice = scanner.nextInt();
-		// option check 
-		while (!choiceCheck) {
-			if (choice > 8) {
-				System.out.println("You have to enter a number between 0 - 8\n> ");
-				choice = scanner.nextInt();
+//		System.out.println(">");
+//		choice = scanner.nextInt();
+		// option check
+		//sunxin
+//		while (!choiceCheck) {
+//			if (choice > 8) {
+//				System.out.println("You have to enter a number between 0 - 8\n> ");
+//				choice = scanner.nextInt();
+//				continue;
+//				}
+//
+//			boolean casesCheck = false;
+//			while (!casesCheck) {
+//				// check if the input is within the avalible options
+//				if (userOptions.contains(choice)) {
+//					casesCheck = true;
+//				}
+//				else {
+//					System.out.println("please enter the number within the availabe options\n>");
+//					choice = scanner.nextInt();
+//				}
+//			}
+//			choiceCheck = true;
+//		}
+
+		//kaiyin
+		while(choice<0 || choice >7){
+			System.out.println("Enter a number between 0-7\n> ");
+			if(!scanner.hasNextInt()){
+				System.out.println("Please enter valid number\n> ");
+				scanner.nextLine();
 				continue;
-				}
-			
-			boolean casesCheck = false;
-			while (!casesCheck) {
-				// check if the input is within the avalible options
-				if (userOptions.contains(choice)) {
-					casesCheck = true;
-				}
-				else {
-					System.out.println("please enter the number within the availabe options\n>");
-					choice = scanner.nextInt();
-				}
 			}
-			choiceCheck = true;
+			choice = scanner.nextInt();
+			if(!userOptions.contains(choice)){
+				System.out.println("please enter a number\n> ");
+				choice =-1;
+			}
 		}
+
 		
 		while (choice < 8) {
 			// check options while in the loop
@@ -198,29 +216,43 @@ public class Main {
 				System.out.println("invlid, try again");
 				break;
 			}
-			System.out.println("Please enter any number within the availbe options, enter 0 to exist\n > ");
-			choice = scanner.nextInt();
-			choiceCheck  = false;
-			while (!choiceCheck) {
-				if (choice > 8) {
-					System.out.println("You have to enter a number between 0 - 8");	
-					choice = scanner.nextInt();
+			System.out.println("Please enter any number within the availbe options, enter 0 to exist 999\n > ");
+			choice =-1;
+			while(choice<0 || choice >7){
+				System.out.println("Enter a number between 0-7\n> ");
+				if(!scanner.hasNextInt()){
+					System.out.println("Please enter valid number\n> ");
+					scanner.nextLine();
 					continue;
-					}
-				
-				boolean casesCheck = false;
-				while (!casesCheck) {
-					// check if the input is within the avalible options
-					if (userOptions.contains(choice)) {
-						casesCheck = true;
-					}
-					else {
-						System.out.println("please enter the number within the availabe options\n>");
-						choice = scanner.nextInt();
-					}
 				}
-				choiceCheck = true;
+				choice = scanner.nextInt();
+				if(!userOptions.contains(choice)){
+					System.out.println("please enter a number\n> ");
+					choice =-1;
+				}
 			}
+//			choice = scanner.nextInt();
+//			choiceCheck  = false;
+//			while (!choiceCheck) {
+//				if (choice > 8) {
+//					System.out.println("You have to enter a number between 0 - 8");
+//					choice = scanner.nextInt();
+//					continue;
+//					}
+//
+//				boolean casesCheck = false;
+//				while (!casesCheck) {
+//					// check if the input is within the avalible options
+//					if (userOptions.contains(choice)) {
+//						casesCheck = true;
+//					}
+//					else {
+//						System.out.println("please enter the number within the availabe options\n>");
+//						choice = scanner.nextInt();
+//					}
+//				}
+//				choiceCheck = true;
+//			}
 			
 			
 		}
