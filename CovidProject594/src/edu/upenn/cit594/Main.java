@@ -39,7 +39,7 @@ public class Main {
 		String[] files = args;
 		// check if all file names are correct 
 		if (!FileCreater.checkValidFileNames(files)) {
-			System.out.println("file names are not valid");
+			System.err.println("file names are not valid");
 			return;
 		}
 		// get final map for fileNames

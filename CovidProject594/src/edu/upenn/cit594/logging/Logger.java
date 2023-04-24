@@ -18,7 +18,7 @@ public class Logger {
 
     public void setLogFile(String filename) {
         try {
-            if(filename == null) {
+            if(filename == null || filename.equals("")) {
                 writer = new PrintWriter(System.err);
             }
             // creates a new PrintWriter that writes to the filename
