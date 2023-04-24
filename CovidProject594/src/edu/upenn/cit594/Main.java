@@ -87,7 +87,7 @@ public class Main {
 					casesCheck = true;
 				}
 				else {
-					System.out.println("please enter the number within the availabe options");
+					System.out.println("please enter the number within the availabe options\n>");
 					choice = scanner.nextInt();
 				}
 			}
@@ -215,7 +215,7 @@ public class Main {
 						casesCheck = true;
 					}
 					else {
-						System.out.println("please enter the number within the availabe options");
+						System.out.println("please enter the number within the availabe options\n>");
 						choice = scanner.nextInt();
 					}
 				}

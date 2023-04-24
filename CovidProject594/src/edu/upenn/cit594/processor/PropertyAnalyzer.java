@@ -18,7 +18,7 @@ public class PropertyAnalyzer {
     private Map<String, Integer> avgLivableAreaStorage = new HashMap<>();
     private Map<String, Integer> avgValuePerCapitaStorage = new HashMap<>();
 
-    private ComparePropertyValue compareValue =new ComparePropertyValue();
+    private ComparePropertyStrategy compareValue =new ComparePropertyValue();
     public PropertyAnalyzer (AlmightyReader reader) {
         this.reader = reader;
         propertyDataSet = reader.getPropertyList();
