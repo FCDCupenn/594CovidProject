@@ -44,9 +44,9 @@ public class FileCreater {
 			}
 		}
 		// create a new filename for log
-		if (!res.containsKey(LOG)) {
-			res.put(LOG, "new_log_file.txt");
-		}
+//		if (!res.containsKey(LOG)) {
+//			res.put(LOG, "new_log_file.txt");
+//		}
 
 		return res;
 	}
@@ -68,9 +68,10 @@ public class FileCreater {
 			// if it matches
 			if (m1.find()) {
 
-				// if the file exists
 				// check the name argument
+				int count = 0;
 				for (int i = 0; i < prefix.length; i++) {
+					
 					if (s.startsWith(prefix[i])) {
 //							// if the file contain the prefix, check if this file exist
 //							
@@ -81,13 +82,23 @@ public class FileCreater {
 						int index = s.substring(prefix[i].length() - 1).indexOf(prefix[i]);
 						// if there is a replicate, then index will not be -1
 						// so it will return false
-						if (index != -1)
+						if (index != -1) {
 							return false;
+						}
+						else {
+							break;
+						}
 
+					}
+					else {
+						count += 1;
+						// if count ==4 means that it checks all the files and still can't find it
+						if (count == 4) return false;
 					}
 				}
 
-			} else {
+			} 
+			else {
 				return false;
 			}
 		}

@@ -20,6 +20,7 @@ public class Logger {
         try {
             if(filename == null || filename.equals("")) {
                 writer = new PrintWriter(System.err);
+                return;
             }
             // creates a new PrintWriter that writes to the filename
             writer = new PrintWriter(new FileWriter(filename,true));
