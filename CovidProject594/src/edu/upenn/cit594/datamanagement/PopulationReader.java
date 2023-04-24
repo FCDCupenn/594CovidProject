@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PopulationReader {
 
@@ -20,7 +22,7 @@ public class PopulationReader {
             csvReader = new CSVReader(reader);
             headerID =csvReader.generateHeaderID();
             String[] row;
-            while((row =csvReader.readRow())!=null){
+            while((row =csvReader.readRow())!=null) {
                 String zipCode = row[headerID.get("zip_code")];
                 int population;
                 try {
@@ -29,19 +31,28 @@ public class PopulationReader {
                     continue;
                 }
                 //skip invalid digit
-                if(zipCode.length() != 5){
+                if (zipCode.length() != 5) {
                     continue;
+                } else {
+                    Pattern p = Pattern.compile("\\d{5}");
+                    Matcher m = p.matcher(zipCode);
+                    if (m.find()) {
+                        zipCode = m.group();
+                    } else {
+                        continue;
+                    }
+
+                    Population populationData = new Population(population, zipCode);
+                    populationDataList.add(populationData);
                 }
 
-                Population populationData = new Population(population,zipCode);
-                populationDataList.add(populationData);
-            }
-            //System.out.println("Covid data List size:"+ populationDataList.size());
-
-        } catch (CSVFormatException e) {
+            } } catch (CSVFormatException e) {
             throw new RuntimeException(e);
         }
-        
+
+        System.out.println("pupulation data List size:"+ populationDataList.size());
+
+
         return this.populationDataList;
 
     }
