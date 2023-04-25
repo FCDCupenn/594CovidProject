@@ -141,7 +141,7 @@ public class Main {
 						
 					}
 					else {
-						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD");
+						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD\n> ");
 						break;
 					}
 
@@ -156,18 +156,18 @@ public class Main {
 						ui.printTotalPartialOrFullVacPerCapita(date, "full");
 					}
 					else {	
-						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD");
+						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD\n>");
 						break;
 					}
 
 				}
 				else
-					System.out.println("Please Type partial or full");
+					System.out.println("Please Type partial or full\n> ");
 					break;
 
 			case 4:
 //				logger.log(" User input: " + choice);
-				System.out.println("Please Type zipcode\n> ");
+				System.out.println("Please Type 5 digit zipcode\n> ");
 				input = scanner.next();
 				if(input!=null){
 				ui.printAvgMarketValue(input);
@@ -178,11 +178,11 @@ public class Main {
 
 				case 5:
 //					logger.log(" User input: " + choice);
-					System.out.println("Please Type zipcode\n> ");
+					System.out.println("Please Type 5 digit zipcode\n> ");
 					input = scanner.next();
 					if(input!=null){
 						ui.printAvgTotalLivableArea(input);
-						logger.log("opened file: " + fileNames.get(FileCreater.PROPERTIES));
+						logger.log(fileNames.get(FileCreater.PROPERTIES));
 
 					}
 					break;
@@ -190,33 +190,33 @@ public class Main {
 
 				case 6:
 //					logger.log(" User input: " + choice);
-					System.out.println("Please Type zipcode\n> ");
+					System.out.println("Please Type 5 digit zipcode\n> ");
 					input = scanner.next();
 					if(input!=null){
 						ui.printValuePerCapita(input);
-						logger.log("opened file: " + fileNames.get(FileCreater.PROPERTIES) + " " + fileNames.get(FileCreater.POPULATION));
+						logger.log(fileNames.get(FileCreater.PROPERTIES) + " " + fileNames.get(FileCreater.POPULATION));
 
 					}
 					break;
 
 				case 7:
 //				logger.log(" User input: " + choice);
-				System.out.println("Please Type zipcode\n> ");
+				System.out.println("Please Type 5 digit zipcode\n> ");
 				input = scanner.next();
 				if(input!=null){
 //					logger.log("opened file: " +fileNames.get(FileCreater.COVID)+ fileNames.get(FileCreater.PROPERTIES)
 //					+ fileNames.get(FileCreater.POPULATION)+ " User input: " + input);
-					logger.log("opened file: " +fileNames.get(FileCreater.COVID)+ fileNames.get(FileCreater.PROPERTIES)
+					logger.log(fileNames.get(FileCreater.COVID)+ fileNames.get(FileCreater.PROPERTIES)
 							+ fileNames.get(FileCreater.POPULATION));
 					}
 				ui.printAdditionalFeature(input);
 				break;
 
 			default:
-				System.out.println("invlid, try again");
+				System.out.println("invlid, try again\n> ");
 				break;
 			}
-			System.out.println("Please enter any number within the availbe options, enter 0 to exist 999\n > ");
+			System.out.println("Please enter any number within the availbe options, enter 0 to exist \n > ");
 			choice =-1;
 			while(choice<0 || choice >7){
 				System.out.println("Enter a number between 0-7\n> ");
