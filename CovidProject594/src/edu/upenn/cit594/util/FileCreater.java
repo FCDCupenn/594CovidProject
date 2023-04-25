@@ -43,10 +43,6 @@ public class FileCreater {
 				}
 			}
 		}
-		// create a new filename for log
-//		if (!res.containsKey(LOG)) {
-//			res.put(LOG, "new_log_file.txt");
-//		}
 
 		return res;
 	}
@@ -105,17 +101,16 @@ public class FileCreater {
 		return true;
 	}
 
-	public static boolean checkFilesExist(String[] filenames) {
+	public static boolean checkFilesExist(Map<String, String> filenames) {
 
-		for (int i = 0; i < filenames.length - 1; i++) {
+		for (Map.Entry<String, String> filename : filenames.entrySet()) {
 			// check if the file exist or not
-			if (filenames[i] != "") {
-				File file = new File(filenames[i]);
-				if (!file.exists()) {
-					return false;
-				}
-			}
+			String name = filename.getValue();
 
+			File file = new File(name);
+			if (!file.exists()) {
+				return false;
+			}
 		}
 
 		return true;

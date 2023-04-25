@@ -28,187 +28,185 @@ import edu.upenn.cit594.util.Property;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		
-		if (args.length < 1 || args.length > 4 ) {
-	          System.err.println("incorrect number of arguments");
-	          return;
-	       }
+
+		if (args.length < 1 || args.length > 4) {
+			System.err.println("incorrect number of arguments");
+			return;
+		}
 
 		long startTime = System.currentTimeMillis();
-		
+
 		String[] files = args;
-		// check if all file names are correct 
+		// check if all file names are correct
 		if (!FileCreater.checkValidFileNames(files)) {
 			System.err.println("file names are not valid");
 			return;
 		}
+		
 		// get final map for fileNames
 		Map<String, String> fileNames = FileCreater.createFilesNames(files);
-		Logger logger = Logger.getInstance();;
+		
+		// check if the file exists
+		if (!FileCreater.checkFilesExist(fileNames)) {
+			System.err.println("file names are not valid");
+			return;
+		}
+			
+		Logger logger = Logger.getInstance();
+		;
 		logger.setLogFile(fileNames.get(FileCreater.LOG));
 
 		// intial reader
-		AlmightyReader reader_final  = new AlmightyReader(fileNames);
+
+		AlmightyReader reader_final = new AlmightyReader(fileNames);
+
 		CovidDataProcessor cdp_final = new CovidDataProcessor(reader_final);
 		PropertyAnalyzer property_csv = new PropertyAnalyzer(reader_final);
 		AdditionalFeatureProcessor afp = new AdditionalFeatureProcessor(cdp_final, property_csv);
+
 		Userinterface ui = new Userinterface(property_csv, cdp_final, afp);
 
+		// log commend line
 		String argsline = "";
-		for(int i=0; i<args.length; i++){
-			argsline += args[i] + " ";}
+		for (int i = 0; i < args.length; i++) {
+			argsline += args[i] + " ";
+		}
 		logger.log(argsline);
 
 		Scanner scanner = new Scanner(System.in);
-//		int choice =0;
+
 		int choice = -1;
-		boolean choiceCheck = false;
+
 		List<Integer> userOptions = ui.getAvailableActionsOptions(fileNames);
 		String input = null;
-		String date = null; 
-		
-		
+		String date = null;
+
 		// display the inital input
 		ui.printManu();
-		// input the a number
-//		System.out.println(">");
-//		choice = scanner.nextInt();
-		// option check
-		//sunxin
-//		while (!choiceCheck) {
-//			if (choice > 8) {
-//				System.out.println("You have to enter a number between 0 - 8\n> ");
-//				choice = scanner.nextInt();
-//				continue;
-//				}
-//
-//			boolean casesCheck = false;
-//			while (!casesCheck) {
-//				// check if the input is within the avalible options
-//				if (userOptions.contains(choice)) {
-//					casesCheck = true;
-//				}
-//				else {
-//					System.out.println("please enter the number within the availabe options\n>");
-//					choice = scanner.nextInt();
-//				}
-//			}
-//			choiceCheck = true;
-//		}
-
-		//kaiyin
-		while(choice<0 || choice >7){
+		while (choice < 0 || choice > 7) {
 			System.out.println("Enter a number between 0-7\n> ");
-			if(!scanner.hasNextInt()){
+			if (!scanner.hasNextInt()) {
 				System.out.println("Please enter valid number\n> ");
 				scanner.nextLine();
 				continue;
 			}
 			choice = scanner.nextInt();
-			if(!userOptions.contains(choice)){
-				System.out.println("please enter a number\n> ");
-				choice =-1;
+			if (!userOptions.contains(choice)) {
+				System.out.println("please enter a number within the given options\n> ");
+				choice = -1;
 			}
 		}
 
-		
 		while (choice < 8) {
-			// check options while in the loop
-			
+
 			switch (choice) {
-			case 0: System.out.println("Exit!"); return;
+			case 0:
+				System.out.println("Exit!");
+				return;
 			case 1:
-//				logger.log(" User input: " + choice);
+
 				ui.printAvailableActionsOptions(fileNames);
-				break;			
+				break;
 			case 2:
-//				logger.log("opened file: " + fileNames.get(FileCreater.POPULATION) + "User input: " + choice);
-				logger.log("opened file: " + fileNames.get(FileCreater.POPULATION));
+
+				logger.log(fileNames.get(FileCreater.POPULATION));
 				ui.printTotalPopulationForAllZipCodes();
 				break;
 			case 3:
-//				logger.log(" User input: " + choice);
+
 				System.out.println("Type partial or full\n> ");
 				input = scanner.next();
 				if (input.equals("partial")) {
 					System.out.println("please enter a date in the format: YYYY-MM-DD\n> ");
 					date = scanner.next();
-					
+
 					if (ui.checkDateFormat(date)) {
-//						logger.log("opened file: " + fileNames.get(FileCreater.COVID) + " User input: " + date + " " + input);
-						logger.log("opened file: " + fileNames.get(FileCreater.COVID));
+
+						logger.log(fileNames.get(FileCreater.COVID));
 						ui.printTotalPartialOrFullVacPerCapita(date, "partial");
-						
-					}
-					else {
-						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD\n> ");
+
+					} else {
+						System.out
+								.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD\n> ");
 						break;
 					}
 
-				}
-				else if (input.equals("full")) {
+				} else if (input.equals("full")) {
 					System.out.println("please enter a date in the format: YYYY-MM-DD\n> ");
 					date = scanner.next();
 					if (ui.checkDateFormat(date)) {
-//						logger.log("opened file: " + fileNames.get(FileCreater.COVID) + " User input: " + date + " " + input);
-						logger.log("opened file: " + fileNames.get(FileCreater.COVID));
+
+						logger.log(fileNames.get(FileCreater.COVID));
 
 						ui.printTotalPartialOrFullVacPerCapita(date, "full");
-					}
-					else {	
-						System.out.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD\n>");
+					} else {
+						System.out
+								.println("The date format is wrong, please enter a date in the format: YYYY-MM-DD\n>");
 						break;
 					}
 
-				}
-				else
+				} else
 					System.out.println("Please Type partial or full\n> ");
-					break;
+				break;
 
 			case 4:
-//				logger.log(" User input: " + choice);
+
 				System.out.println("Please Type 5 digit zipcode\n> ");
 				input = scanner.next();
-				if(input!=null){
-				ui.printAvgMarketValue(input);
-				logger.log("opened file: " + fileNames.get(FileCreater.PROPERTIES));
+				if (input != null) {
+					if (input.length() != 5) {
+						System.out.println("Please Type exactly 5 digit zipcode\n> ");
+						break;
+					}
+					ui.printAvgMarketValue(input);
+					logger.log(fileNames.get(FileCreater.PROPERTIES));
 
 				}
 				break;
 
-				case 5:
-//					logger.log(" User input: " + choice);
-					System.out.println("Please Type 5 digit zipcode\n> ");
-					input = scanner.next();
-					if(input!=null){
-						ui.printAvgTotalLivableArea(input);
-						logger.log(fileNames.get(FileCreater.PROPERTIES));
+			case 5:
 
-					}
-					break;
-
-
-				case 6:
-//					logger.log(" User input: " + choice);
-					System.out.println("Please Type 5 digit zipcode\n> ");
-					input = scanner.next();
-					if(input!=null){
-						ui.printValuePerCapita(input);
-						logger.log(fileNames.get(FileCreater.PROPERTIES) + " " + fileNames.get(FileCreater.POPULATION));
-
-					}
-					break;
-
-				case 7:
-//				logger.log(" User input: " + choice);
 				System.out.println("Please Type 5 digit zipcode\n> ");
 				input = scanner.next();
-				if(input!=null){
-//					logger.log("opened file: " +fileNames.get(FileCreater.COVID)+ fileNames.get(FileCreater.PROPERTIES)
-//					+ fileNames.get(FileCreater.POPULATION)+ " User input: " + input);
-					logger.log(fileNames.get(FileCreater.COVID)+ fileNames.get(FileCreater.PROPERTIES)
-							+ fileNames.get(FileCreater.POPULATION));
+				if (input != null) {
+					if (input.length() != 5) {
+						System.out.println("Please Type exactly 5 digit zipcode\n> ");
+						break;
 					}
+					ui.printAvgTotalLivableArea(input);
+					logger.log(fileNames.get(FileCreater.PROPERTIES));
+
+				}
+				break;
+
+			case 6:
+
+				System.out.println("Please Type 5 digit zipcode\n> ");
+				input = scanner.next();
+				if (input != null) {
+					if (input.length() != 5) {
+						System.out.println("Please Type exactly 5 digit zipcode\n> ");
+						break;
+					}
+					ui.printValuePerCapita(input);
+					logger.log(fileNames.get(FileCreater.PROPERTIES) + " " + fileNames.get(FileCreater.POPULATION));
+
+				}
+				break;
+
+			case 7:
+
+				System.out.println("Please Type 5 digit zipcode\n> ");
+				input = scanner.next();
+				if (input != null) {
+
+					if (input.length() != 5) {
+						System.out.println("Please Type exactly 5 digit zipcode\n> ");
+						break;
+					}
+					logger.log(fileNames.get(FileCreater.COVID) + fileNames.get(FileCreater.PROPERTIES)
+							+ fileNames.get(FileCreater.POPULATION));
+				}
 				ui.printAdditionalFeature(input);
 				break;
 
@@ -216,65 +214,31 @@ public class Main {
 				System.out.println("invlid, try again\n> ");
 				break;
 			}
-			System.out.println("Please enter any number within the availbe options, enter 0 to exist \n > ");
-			choice =-1;
-			while(choice<0 || choice >7){
-				System.out.println("Enter a number between 0-7\n> ");
-				if(!scanner.hasNextInt()){
+			// System.out.println("Please enter any number within the availbe options, enter
+			// 0 to exist \n > ");
+			choice = -1;
+			while (choice < 0 || choice > 7) {
+				System.out.println("Enter a number between 0-7 to restart the program\n> ");
+				if (!scanner.hasNextInt()) {
 					System.out.println("Please enter valid number\n> ");
 					scanner.nextLine();
 					continue;
 				}
 				choice = scanner.nextInt();
-				if(!userOptions.contains(choice)){
-					System.out.println("please enter a number\n> ");
-					choice =-1;
+				if (!userOptions.contains(choice)) {
+					System.out.println("please enter a number with given options\n> ");
+					choice = -1;
 				}
 			}
-//			choice = scanner.nextInt();
-//			choiceCheck  = false;
-//			while (!choiceCheck) {
-//				if (choice > 8) {
-//					System.out.println("You have to enter a number between 0 - 8");
-//					choice = scanner.nextInt();
-//					continue;
-//					}
-//
-//				boolean casesCheck = false;
-//				while (!casesCheck) {
-//					// check if the input is within the avalible options
-//					if (userOptions.contains(choice)) {
-//						casesCheck = true;
-//					}
-//					else {
-//						System.out.println("please enter the number within the availabe options\n>");
-//						choice = scanner.nextInt();
-//					}
-//				}
-//				choiceCheck = true;
-//			}
-			
-			
+
 		}
 		logger.close();
-		
-		
 
-
-		
-		
-
-
-		
-
-		//testing speed <120000ms
+		// testing speed <120000ms
 
 		long endTime = System.currentTimeMillis();
 		long elapsedTime = endTime - startTime;
 		System.out.println("Elapsed time: " + elapsedTime + " milliseconds");
-		
-		
-
 
 	}
 }

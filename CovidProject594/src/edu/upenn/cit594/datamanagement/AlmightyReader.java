@@ -49,7 +49,7 @@ public class AlmightyReader {
 		else if (covidfile.toLowerCase().endsWith(".json")) {
 			covidList = new JSONFileReader().readAllCovid(covidfile);
 		} else
-			System.out.println("The covid file time is wrong");
+			System.err.println("The covid file time is wrong");
 
 		return covidList;
 
@@ -75,7 +75,7 @@ public class AlmightyReader {
 				e.printStackTrace();
 			}
 		} else
-			System.out.println("The property file time is wrong");
+			System.err.println("The property file time is wrong");
 		return propertyList;
 
 	}
@@ -101,7 +101,7 @@ public class AlmightyReader {
 				e.printStackTrace();
 			}
 		} else
-			System.out.println("The population file time is wrong");
+			System.err.println("The population file time is wrong");
 		return populationList;
 
 	}

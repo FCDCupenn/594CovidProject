@@ -98,7 +98,7 @@ public class Userinterface {
 		System.out.println("BEGIN OUTPUT");
 		for (int i = 0; i < options.size(); i++) {	
 			System.out.println(options.get(i));
-			l.log("result " + options.get(i));
+			l.log(String.valueOf(options.get(i)));
 		}
 		System.out.println("END OUTPUT");
 		
@@ -128,21 +128,21 @@ public class Userinterface {
 		Logger l = Logger.getInstance();
 		int AvgMarketValue = propertyAnalyzer.getAverageMarketValue(input);
 		System.out.println("BEGIN OUTPUT" +"\n" + AvgMarketValue +"\n" + "END OUTPUT");
-		l.log("result " + AvgMarketValue);
+		l.log(String.valueOf(AvgMarketValue));
 	}
 
 	public  void printAvgTotalLivableArea(String input) {
 		Logger l = Logger.getInstance();
 		int AvgLivableValue = propertyAnalyzer.getAverageLivableArea(input);
 		System.out.println("BEGIN OUTPUT" + "\n" + AvgLivableValue + "\n" + "END OUTPUT");
-		l.log("result " + AvgLivableValue);
+		l.log(String.valueOf(AvgLivableValue));
 	}
 
 	public  void printValuePerCapita(String input){
 		Logger l = Logger.getInstance();
 		int AvgValuePerCapita = propertyAnalyzer.getATotalMarketValuePerCapita(input);
 		System.out.println("BEGIN OUTPUT" +"\n" + AvgValuePerCapita +"\n" + "END OUTPUT");
-		l.log("result " + AvgValuePerCapita);
+		l.log(String.valueOf(AvgValuePerCapita));
 	}
 	
 	/**
@@ -155,7 +155,7 @@ public class Userinterface {
 		System.out.println("BEGIN OUTPUT");
 		System.out.println(count);
 		System.out.println("END OUTPUT");
-		l.log("result " + count);
+		l.log(String.valueOf(count));
 		
 	}
 	
@@ -171,7 +171,7 @@ public class Userinterface {
 		for (Map.Entry<String, Double> pfc : partialorFullPerCapita.entrySet()) {		
 			System.out.print(pfc.getKey() + " ");
 			System.out.println(pfc.getValue());
-			l.log("result " + pfc.getKey() + " " + pfc.getValue());
+			l.log(pfc.getKey() + " " + pfc.getValue());
 		}
 		System.out.println("END OUTPUT");
 	
@@ -191,7 +191,7 @@ public class Userinterface {
 		for (Map.Entry<Double, Integer> pfc : TotalHospitalizedAndTotalMarketValuePerCapita.entrySet()) {
 			System.out.print(pfc.getKey() + "                 ");
 			System.out.println(pfc.getValue());
-			l.log("result " + pfc.getKey() + " " + pfc.getValue());
+			l.log(pfc.getKey() + " " + pfc.getValue());
 		}
 		
 		System.out.println("END OUTPUT");
